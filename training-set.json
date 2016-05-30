@@ -19,6 +19,11 @@
         { "label" : "dog", "description" : "Obedient and loyal although yaps and howls a lot, good on a lead" },
         { "label" : "fish", "description" : "Small wavy and blue, likes to fight, lives in the water" },
         { "label" : "dog", "description" : "Small Jack Russell, mainly white with dark and light brown patches on her face, covering one eye. Slightly chubby due to a love of food!" },
-        { "label" : "dog", "description" : "coloured fawn and white. Very shy with people or situations he is unfamiliar with. He snores loudly and likes belly rubs" }
+        { "label" : "dog", "description" : "coloured fawn and white. Very shy with people or situations he is unfamiliar with. He snores loudly and likes belly rubs" },
+		{ "label" : "dog", "description" : "Buster large German Shepard ( 7 stone ) typical colouring , very friendly, very tall for his breed, great with all of our other pets, eats like a horse, moults a fur coat every week" },
+		{ "label" : "dog", "description" : "Labrador puppy, chocolate in colour, bouncy, bitey, loud, licking pooing and peeing machine with an insatiable appetite" },
+		{ "label" : "dog", "description" : "big soft fluffy cuddly but a bit scary looking Japanese Akita puppy who weighs 20kg at 6 months" },
+		{ "label" : "dog", "description" : "Has had 1 or more litters, many conformational problems. Active, affectionate, prefers me over anybody, submissive with other dogs, pretty bomb proof" },
+		{ "label" : "cat", "description" : "Rescue Siamese, intolerant, hunts, dislikes the majority of animals, dislikes affection, demanding" }
     ]
 }
