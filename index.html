@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<title>Which Pet - Naive Bayes Classifier</title>
+		<script src="which-pet.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('#input input[type=button]').click(function(){
+					var label = $('#input').find('select option:selected').val();
+					var description = $('#input').find('input[type=text]').val();
+					addToData(label, description);
+					alert('Your description has been added to '+label);
+				});
+				$('#which-pet input[type=button]').click(function(){
+					var description = $('#which-pet').find('input[type=text]').val();
+					alert('Is it a '+findMostLikelyLabel(description)+'?');
+				});
+			});
+		</script>
+	</head>
+	<body>
+	
+		<hr />
+	
+		<h2>Input</h2>
+		<p>
+			Input the type of pet in the label field and your description in the 
+			description field and hit submit to add your description to the map of 
+			learned pet descriptions.
+		</p>
+		<form id="input">
+			<p>
+				Label: 
+				<select name="label">
+					<option value="cat">Cat</option>
+					<option value="dog">Dog</option>
+					<option value="fish">Fish</option>
+					<option value="bird">Bird</option>
+					<option value="reptile">Reptile</option>
+				</select>
+			</p>
+			<p>Description: <input type="text" name="description" maxlength="140" /></p>
+			<p><input type="button" value="Submit" /></p>
+		</form>
+		
+		<hr />
+		
+		<h2>Try Me</h2>
+		<p>
+			Put the description of your pet in the description field and hit the 
+			'Which Pet' button to see which type of pet the description will be 
+			classified as.
+		</p>
+		<form id="which-pet">
+			<p>Description: <input type="text" name="description" maxlength="140" /></p>
+			<p><input type="button" value="Which Pet" /></p>
+		</form>
+		
+		<hr />
+		
+	</body>
+</html>
