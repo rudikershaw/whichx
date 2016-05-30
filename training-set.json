@@ -1,0 +1,24 @@
+{
+    "pets" : [
+        { "label" : "dog", "description" : "small, brown and white, four legs and a tail, long ears, long nose" },
+        { "label" : "cat", "description" : "Small, fluffy, cream colour, pointy ears, paws" },
+        { "label" : "cat", "description" : "Small, grey, fluffy, 4 legs, agile, relaxes on his back, sleeps with his legs crossed, vocal" },
+        { "label" : "cat", "description" : "Small red and white, 4 legs, huge amber eyes, scared of his own shadow" },
+        { "label" : "reptile", "description" : "18 inches long, creamy colour but changes to black when agitated, sticky tongue, tiny teeth, sharp claws, 4 legs, cold blooded" },
+        { "label" : "dog", "description" : "Medium-sized, black, floppy ears, long nose, four legs and a tail" },
+        { "label" : "dog", "description" : "Big ears, squashed nose, no tail, sucks her feet" },
+        { "label" : "cat", "description" : "Black fur, long tail, big eyes, noisy, has whiskers" },
+        { "label" : "cat", "description" : "Silver and white striped fur, chases anything small that moves, lays on my lap and makes a purring drone with a beat in it. Makes a sound like meow when wanting attention or strokes or food" },
+        { "label" : "dog", "description" : "Friendly, smiley, bouncy, barks a lot and wags her tail when she's happy" },
+        { "label" : "fish", "description" : "Big eyes, orange, pouts, has gills and fins, and swims pretty well" },
+        { "label" : "reptile", "description" : "Green, scaly, slithers, has a forked tongue and likes to eat mice" },
+        { "label" : "bird", "description" : "repeats what you say, flaps wings, talks and has green and red feathers" },
+        { "label" : "dog", "description" : "yelps when you touch her floppy ears, begs at the table, chases cats" },
+        { "label" : "dog", "description" : "Likes to play fetch and chase her own tail, good at agility training" },
+        { "label" : "cat", "description" : "Meows a lot, hisses when afraid, coughs up hair balls" },
+        { "label" : "dog", "description" : "Obedient and loyal although yaps and howls a lot, good on a lead" },
+        { "label" : "fish", "description" : "Small wavy and blue, likes to fight, lives in the water" },
+        { "label" : "dog", "description" : "Small Jack Russell, mainly white with dark and light brown patches on her face, covering one eye. Slightly chubby due to a love of food!" },
+        { "label" : "dog", "description" : "coloured fawn and white. Very shy with people or situations he is unfamiliar with. He snores loudly and likes belly rubs" }
+    ]
+}
