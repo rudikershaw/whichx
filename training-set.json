@@ -20,10 +20,16 @@
         { "label" : "fish", "description" : "Small wavy and blue, likes to fight, lives in the water" },
         { "label" : "dog", "description" : "Small Jack Russell, mainly white with dark and light brown patches on her face, covering one eye. Slightly chubby due to a love of food!" },
         { "label" : "dog", "description" : "coloured fawn and white. Very shy with people or situations he is unfamiliar with. He snores loudly and likes belly rubs" },
-		{ "label" : "dog", "description" : "Buster large German Shepard ( 7 stone ) typical colouring , very friendly, very tall for his breed, great with all of our other pets, eats like a horse, moults a fur coat every week" },
-		{ "label" : "dog", "description" : "Labrador puppy, chocolate in colour, bouncy, bitey, loud, licking pooing and peeing machine with an insatiable appetite" },
-		{ "label" : "dog", "description" : "big soft fluffy cuddly but a bit scary looking Japanese Akita puppy who weighs 20kg at 6 months" },
-		{ "label" : "dog", "description" : "Has had 1 or more litters, many conformational problems. Active, affectionate, prefers me over anybody, submissive with other dogs, pretty bomb proof" },
-		{ "label" : "cat", "description" : "Rescue Siamese, intolerant, hunts, dislikes the majority of animals, dislikes affection, demanding" }
+        { "label" : "dog", "description" : "Buster large German Shepard ( 7 stone ) typical colouring , very friendly, very tall for his breed, great with all of our other pets, eats like a horse, moults a fur coat every week" },
+        { "label" : "dog", "description" : "Labrador puppy, chocolate in colour, bouncy, bitey, loud, licking pooing and peeing machine with an insatiable appetite" },
+        { "label" : "dog", "description" : "big soft fluffy cuddly but a bit scary looking Japanese Akita puppy who weighs 20kg at 6 months" },
+        { "label" : "dog", "description" : "Has had 1 or more litters, many conformational problems. Active, affectionate, prefers me over anybody, submissive with other dogs, pretty bomb proof" },
+        { "label" : "cat", "description" : "Rescue Siamese, intolerant, hunts, dislikes the majority of animals, dislikes affection, demanding" },
+        { "label" : "dog", "description" : "Small, brown and white with a Blenheim Spot, a waggy tail and long ears" },
+        { "label" : "dog", "description" : "Small, fluffy, excitable, with four legs and a tail, a bit bitey but in a gentle way - very affectionate" },
+        { "label" : "dog", "description" : "short, stocky, brindle, no tail, snorts, farts, playful, affectionate, big ears, strong, high energy, extremely friendly and loving!" },
+        { "label" : "cat", "description" : "Havana brown, Siamese cross, large, fluffy, soft, affectionate, likes water, loves to eat, looks like a panther, sleeps all day" },
+        { "label" : "cat", "description" : "female long haired tortoiseshell, really independent and doesn't like cuddles from anyone but me. Very good at scaring people away from the door! Blacklisted from the vets due to her temper" },
+        { "label" : "cat", "description" : "Tiger stripes, silver tabby, part mancoon. Needs lots of attention and affection, a big old softy" }
     ]
 }
