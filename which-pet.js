@@ -8,7 +8,8 @@
 var typesMap = { 
     'cat' : { 'tcount' : 0, 'wordTotal' : 0 }, 
     'dog' : { 'tcount' : 0, 'wordTotal' : 0 }, 
-    'fish' : { 'tcount' : 0, 'wordTotal' : 0 }, 
+    'fish' : { 'tcount' : 0, 'wordTotal' : 0 },
+    'horse' : { 'tcount' : 0, 'wordTotal' : 0 },     
     'bird' : { 'tcount' : 0, 'wordTotal' : 0 }, 
     'reptile' : { 'tcount' : 0, 'wordTotal' : 0 },
     // Total must exist and be incremented for probability calculations.
@@ -19,9 +20,9 @@ var typesMap = {
 function addToData(label, description){
     if(label in typesMap && typeof description === 'string'){
         var type = typesMap[label];
-        var total = typesMap['total'];
-        type['tcount'] = type['tcount'] + 1;
-        total['tcount'] = total['tcount'] + 1;
+        var total = typesMap.total;
+        type.tcount = type.tcount + 1;
+        total.tcount = total.tcount + 1;
         var wordArray = processToArray(description);
         // Check whether each word exists against that label and the total.
         // If it does increment the tcount, otherwise add the word.
@@ -39,8 +40,8 @@ function addToData(label, description){
             } else {
                 total[word] = 1;
             }
-            type['wordTotal'] = type['wordTotal'] + 1;
-            total['wordTotal'] = total['wordTotal'] + 1;    
+            type.wordTotal = type.wordTotal + 1;
+            total.wordTotal = total.wordTotal + 1;    
         }
     } else {
         throw "Invalid label or description";        
@@ -51,35 +52,37 @@ function addToData(label, description){
 function findMostLikelyLabel(description){
     if(typeof description === 'string' && description.length > 0){
         var wordArray = processToArray(description);
-        var total = typesMap['total'];
+        var total = typesMap.total;
         var bestChance = 0;
         var bestLabel = 'cat';
         // Loop through types working out the chance of the description being 
         // for this type. If better than bestChance then bestChange <- chance.
         for(var typeName in typesMap){
-            var type = typesMap[typeName];
-            var typeChance = 0;
-            // Loop through words and work out probability of type given each word.
-            // Multiply each word's probability by total probability to determine type probability.
-            for(var i = 0; i < wordArray.length; i++){            
-                var typeWordCount = (typeof type[wordArray[i]] !== "undefined" ? type[wordArray[i]] : mEstimate());
-                var totalWordCount = (typeof total[wordArray[i]] !== "undefined" ? total[wordArray[i]] : mEstimate());
-                // Bayes' theorem calculation. 
-                var p1 = (typeWordCount / type['wordTotal']) * (type['tcount'] / total['tcount']);
-                var p2 = ((totalWordCount - typeWordCount / (total['wordTotal'] - type['wordTotal'])) * ((total['tcount'] - type['tcount']) / total['tcount']));
-                var wordChance = p1 / ( p1 + p2 );
-                if(typeChance <= 0){
-                    typeChance = wordChance;
-                } else {
-                    typeChance = typeChance * wordChance;
+            if(typesMap.hasOwnProperty(typeName)){
+                var type = typesMap[typeName];
+                var typeChance = 0;
+                // Loop through words and work out probability of type given each word.
+                // Multiply each word's probability by total probability to determine type probability.
+                for(var i = 0; i < wordArray.length; i++){            
+                    var typeWordCount = (typeof type[wordArray[i]] !== "undefined" ? type[wordArray[i]] : mEstimate());
+                    var totalWordCount = (typeof total[wordArray[i]] !== "undefined" ? total[wordArray[i]] : mEstimate());
+                    // Bayes' theorem calculation. 
+                    var p1 = (typeWordCount / type.wordTotal) * (type.tcount / total.tcount);
+                    var p2 = ((totalWordCount - typeWordCount / (total.wordTotal - type.wordTotal)) * ((total.tcount - type.tcount) / total.tcount));
+                    var wordChance = p1 / ( p1 + p2 );
+                    if(typeChance <= 0){
+                        typeChance = wordChance;
+                    } else {
+                        typeChance = typeChance * wordChance;
+                    }
                 }
-            }
-            // Multiply final probability by overall probability that it is of this type to weight by most popular types.
-            typeChance = typeChance * (type['tcount'] / total['tcount']);
-            if(typeChance > bestChance){
-                bestChance = typeChance;
-                bestLabel = typeName;
-            }
+                // Multiply final probability by overall probability that it is of this type to weight by most popular types.
+                typeChance = typeChance * (type.tcount / total.tcount);
+                if(typeChance > bestChance){
+                    bestChance = typeChance;
+                    bestLabel = typeName;
+                }
+            }          
         }
         return bestLabel;
     } else {
@@ -90,8 +93,8 @@ function findMostLikelyLabel(description){
 // A non-zero prior estimate to prevent 0 based probability calculations.
 function mEstimate(){
     // TODO - Define a reliable m-estimate.
-    var total = typesMap['total'];
-    return 1/total['wordTotal'];
+    var total = typesMap.total;
+    return 1/total.wordTotal;
 }
 
 

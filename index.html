@@ -1,20 +1,30 @@
 <html>
     <head>
+        <meta charset="UTF-8" />
         <title>Which Pet - Naive Bayes Classifier</title>
         <script src="which-pet.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script>
             $(document).ready(function(){
+				// Set up inputs to take description and label.
                 $('#input input[type=button]').click(function(){
                     var label = $('#input').find('select option:selected').val();
                     var description = $('#input').find('input[type=text]').val();
                     addToData(label, description);
                     alert('Your description has been added to '+label);
                 });
+				// Set up which pet to try and guess animal label.
                 $('#which-pet input[type=button]').click(function(){
                     var description = $('#which-pet').find('input[type=text]').val();
                     alert('Is it a '+findMostLikelyLabel(description)+'?');
                 });
+				// Load JSON training set and input training set into data map.
+                // Please note - getJSON will not load over file protocol on chrome.
+				$.getJSON("training-set.json", function(data) {
+					for(var i = 0; i < data.pets.length; i++){ 
+                        addToData(data.pets[i].label, data.pets[i].description);
+                    }
+				});
             });
         </script>
     </head>
