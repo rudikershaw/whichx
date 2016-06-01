@@ -19,7 +19,7 @@
                     alert('Is it a '+findMostLikelyLabel(description)+'?');
                 });
 				// Load JSON training set and input training set into data map.
-                // Please note - getJSON will not load over file protocol on chrome.
+                // Please note - getJSON over local file protocol doesn't work well.
 				$.getJSON("training-set.json", function(data) {
 					for(var i = 0; i < data.pets.length; i++){ 
                         addToData(data.pets[i].label, data.pets[i].description);

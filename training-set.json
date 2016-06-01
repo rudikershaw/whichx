@@ -39,6 +39,12 @@
 		{ "label" : "fish", "description" : "Small tropical, colourful and lively. Social with other fish" },
 		{ "label" : "cat", "description" : "old marmalade tom, loves everyone, very soft fur, Loud and deaf" },
 		{ "label" : "cat", "description" : "16 year old male tabby, recovering from thyroid storm, likes venison and cardboard boxes, recently known as Princess Woo" },
-		{ "label" : "dog", "description" : "Rufus, very nervous beagle trying to come to terms with his family moving and splitting up. Usually he is a dab hand at discovering where food is and wolfing it all down" }
+		{ "label" : "dog", "description" : "Rufus, very nervous beagle trying to come to terms with his family moving and splitting up. Usually he is a dab hand at discovering where food is and wolfing it all down" },
+        { "label" : "cat", "description" : "likes to stay indoors and prefers to eat fish" },
+        { "label" : "cat", "description" : "sleeps in the day and stays out all night, likes chasing birds and eats anything, very affectionate" },
+        { "label" : "cat", "description" : "Abandoned and slightly feral when he eats. But he has become as loving as a child. Keeps close by, and loves go play fetch with his mouse" },
+        { "label" : "cat", "description" : "came to us as a stray about 10 years ago now mostly a house but can still catch rabbits. Hates the dog" },
+        { "label" : "dog", "description" : "Female, with brown and white markings, sleek coat, pointy nose. Very placid but gets excited for walks. Sniffs at hedges or bushes then pushes her way into them if interested. Lifts and crooks front foreleg when in 'hunting' mode" },
+        { "label" : "dog", "description" : "Soppy old boy who likes to play fetch and catch with his ball" }
     ]
 }
