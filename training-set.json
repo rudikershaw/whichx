@@ -45,6 +45,12 @@
         { "label" : "cat", "description" : "Abandoned and slightly feral when he eats. But he has become as loving as a child. Keeps close by, and loves go play fetch with his mouse" },
         { "label" : "cat", "description" : "came to us as a stray about 10 years ago now mostly a house but can still catch rabbits. Hates the dog" },
         { "label" : "dog", "description" : "Female, with brown and white markings, sleek coat, pointy nose. Very placid but gets excited for walks. Sniffs at hedges or bushes then pushes her way into them if interested. Lifts and crooks front foreleg when in 'hunting' mode" },
+        { "label" : "fish", "description" : "One gold in colour, one white and red. Overfed and very fat. Long tails" },
+        { "label" : "dog", "description" : "mainly white one largely brown, closely bonded very loving" },
+        { "label" : "cat", "description" : "Dolly, blue eyed seal rag doll, opinionated, bossy , needy, beautiful, loves hunting, eating, sleeping and loves us" },
+        { "label" : "reptile", "description" : "Boris, 8 year old female Rankin dragon, loves cartoons and chasing locusts. Likes to run around the carpet and sit on warm hands watching TV" },
+        { "label" : "horse", "description" : "fleabitten grey mare, 15.3 hh, 23 years old, 3/4 Appaloosa, 1/4 Thoroughbred. Freezemark left side withers. Rear left cannon bone lump and slight scarring. Front left hoof slightly distorted by left bulb/coronet band. White hoof on right hind . Whorl at eye level on centre line; feathered chest whorl. Slight gait abnormality in walk: right hind foot twists outwards on contact with hard ground. Has had tendon problems in the past, and is fitted with heart-bar shoes. Suffers from arthritis, but this is managed with medication and careful exercise. Very kind and gentle to handle, and gets on well with most other horses. Schooled to a good standard, forward-going and enjoys a fast hack but generally very co-operative. Good in traffic" },
+        { "label" : "cat", "description" : "young, pale ginger cream, long haired, neutered Tom with a white ruff. Generally friendly of disposition, eats modestly and loves to sleep in one of the most comfortable armchairs in the house. Has a distinctive scratch to one ear and is still in recovery subsequent to a recent scrap with a feral cat" },
         { "label" : "dog", "description" : "Soppy old boy who likes to play fetch and catch with his ball" }
     ]
 }
