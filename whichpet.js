@@ -31,7 +31,7 @@ function Whichpet(){
     };  
       
     // Add word data from a description to a specified label.
-    this.addToData = function(label, description){
+    this.addData = function(label, description){
         if(label in typesMap && typeof description === 'string'){
             var type = typesMap[label];
             var total = typesMap.total;
@@ -63,7 +63,7 @@ function Whichpet(){
     };
 
     // Take a description and find the most likely label for it.
-    this.findMostLikelyLabel = function(description){
+    this.classify = function(description){
         if(typeof description === 'string' && description.length > 0){
             var wordArray = processToArray(description);
             var total = typesMap.total;

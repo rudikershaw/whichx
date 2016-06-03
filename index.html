@@ -12,13 +12,13 @@
                 $('#input input[type=button]').click(function(){
                     var label = $('#input').find('select option:selected').val();
                     var description = $('#input').find('input[type=text]').val();
-                    whichpet.addToData(label, description);
+                    whichpet.addData(label, description);
                     alert('Your description has been added to '+label);
                 });
 				// Set up which pet to try and guess animal label.
                 $('#which-pet input[type=button]').click(function(){
                     var description = $('#which-pet').find('input[type=text]').val();
-                    alert('Is it a '+whichpet.findMostLikelyLabel(description)+'?');
+                    alert('Is it a '+whichpet.classify(description)+'?');
                 });
                 // Load labels into data set.
                 var labels = ["cat","dog","fish","horse","bird","reptile"];
@@ -27,7 +27,7 @@
                 // Please note - getJSON over local file protocol doesn't work well.
 				$.getJSON("training-set.json", function(data) {
 					for(var i = 0; i < data.pets.length; i++){ 
-                        whichpet.addToData(data.pets[i].label, data.pets[i].description);
+                        whichpet.addData(data.pets[i].label, data.pets[i].description);
                     }
 				});
             });

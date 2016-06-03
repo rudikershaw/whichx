@@ -26,14 +26,14 @@ After this you will want to add the labels you wish to give to the types of desc
 Now you can add descriptions to each label. These descriptions, with their labels, act as your training set data.
 ```js
     // Add a description and its label to the data set.
-    whichpet.addToData("pokemon", "loyal and bright yellow with a lightning shaped tail");
+    whichpet.addData("pokemon", "loyal and bright yellow with a lightning shaped tail");
     // ... Add more here.
 ```
 
 With enough data (the more the better), you can provide a description on it's own and ask the classifier which label it thinks it belongs to.
 ```js
     // Which pet am I talking about?
-    var pet = whichpet.findMostLikelyLabel("Its yellow and shoots lightning");
+    var pet = whichpet.classify("Its yellow and shoots lightning");
     echo "It's a " + pet + "!";
 ```
 
