@@ -34,7 +34,7 @@ With enough data (the more the better), you can provide a description on it's ow
 ```js
     // Which pet am I talking about?
     var pet = whichpet.classify("Its yellow and shoots lightning");
-    echo "It's a " + pet + "!";
+    console.log("It's a " + pet + "!");
 ```
 
 That's it. Enjoy.
