@@ -1,0 +1,24 @@
+{
+  "name": "whichpet",
+  "version": "1.0.0",
+  "description": "A text description classifier for classifying arbitrary strings into provided labels",
+  "main": "whichpet.js",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudikershaw/whichpet.git"
+  },
+  "keywords": [
+    "text",
+    "bayes",
+    "classifier"
+  ],
+  "author": "Rudi Kershaw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rudikershaw/whichpet/issues"
+  },
+  "homepage": "https://github.com/rudikershaw/whichpet#readme"
+}
