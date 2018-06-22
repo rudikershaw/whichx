@@ -1,9 +1,6 @@
 # Whichpet
 
-Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. 
-The whichpet.js is where all the logic is and the rest of the project serves only as an example of how the whichpet.js should be used. In the index.html we use the example 
-of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of 
-descriptions you can put labels to.
+Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. The ```whichpet.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichpet.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of descriptions you can put labels to.
 
 ## Usage
 
@@ -38,3 +35,13 @@ With enough data (the more the better), you can provide a description on it's ow
 ```
 
 That's it. Enjoy.
+
+## Contributing
+
+To get starting making changes to the project you will need to;
+
+1. Install node and npm.
+2. Run ```npm install``` in the root of the project.
+3. Run ```npm test -s``` to run the linters and unit tests.
+
+As long as any changes you make pass all linting checks and unit tests, feel free to raise a pull request.
