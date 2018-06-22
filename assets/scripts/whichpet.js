@@ -14,13 +14,11 @@ function Whichpet(){
     // Add a label or list of labels to the  
     this.addLabels = function(labels){
         if(typeof labels === 'string' && labels.length > 0 && !(labels in typesMap)){
-            var object = { 'tcount' : 0, 'wordTotal' : 0 };
-            typesMap[labels.toLowerCase()] = object;
+            typesMap[labels.toLowerCase()] = { 'tcount' : 0, 'wordTotal' : 0 };
         } else if(labels instanceof Array){
             for(var i = 0; i < labels.length; i++){
-                if(typeof labels[i] === 'string' && labels[i].length > 0 && !(labels[i] in typesMap)){               
-                    var object = { 'tcount' : 0, 'wordTotal' : 0 };
-                    typesMap[labels[i].toLowerCase()] = object;
+                if(typeof labels[i] === 'string' && labels[i].length > 0 && !(labels[i] in typesMap)){
+                    typesMap[labels[i].toLowerCase()] = { 'tcount' : 0, 'wordTotal' : 0 };
                 } else {
                     throw "Invalid label";
                 }    
@@ -149,4 +147,9 @@ function Whichpet(){
             throw "Invalid description";
         }
     }                 
+}
+
+// Export whichpet function if using node.
+if (module && module.exports) {
+    module.exports = Whichpet;
 }

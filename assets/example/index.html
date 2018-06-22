@@ -2,14 +2,14 @@
     <head>
         <meta charset="UTF-8" />
         <title>Which Pet - Naive Bayes Classifier</title>
-        <script src="whichpet.js"></script>
+        <script src="../scripts/whichpet.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,400italic,700,700italic" rel="stylesheet" type="text/css" />
         <script>           
             $(document).ready(function(){
                 // Create the Whichpet object. 
                 var whichpet = new Whichpet();
-		// Define details of popup. If classifier guesses right, re-inforce data, 
+		            // Define details of popup. If classifier guesses right, re-inforce data,
                 // otherwise ask while label to add description to.
                 $('#input input[type="button"]').click(function(){
                     var label = $('#input').find('select option:selected').val();
@@ -29,7 +29,7 @@
                     $('div.buttons').hide();
                     $('#input').show();
                 });
-		// Set up Whichpet to try and guess animal label.
+		            // Set up Whichpet to try and guess animal label.
                 $('#which-pet input[type="button"]').click(function(){
                     var description = $('#which-pet').find('textarea').val();
                     $('div.popup h2').text('Are you describing a '+whichpet.classify(description)+'?');
@@ -38,13 +38,13 @@
                 // Load labels into data set.
                 var labels = ["cat","dog","fish","horse","bird","reptile"];
                 whichpet.addLabels(labels);
-		// Load JSON training set and input training set into data map.
-		// Note - getJSON over local file protocol doesn't work well.
-		$.getJSON("training-set.json", function(data) {
-		    for(var i = 0; i < data.pets.length; i++){ 
+                // Load JSON training set and input training set into data map.
+                // Note - getJSON over local file protocol doesn't work well.
+                $.getJSON("training-set.json", function(data) {
+                    for(var i = 0; i < data.pets.length; i++){
                         whichpet.addData(data.pets[i].label, data.pets[i].description);
                     }
-		});
+                });
             });
         </script>
         <style>
