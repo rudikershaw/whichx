@@ -26,8 +26,8 @@
 
         describe("labels", function() {
             var classifier = new Whichpet();
-            var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
-            var invalidLabels = ["total", "Total", "constructor", "cat"];
+            var validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
+            var invalidLabels = ["total", "Total", "constructor", "cat", {}, /test/, 1];
 
             it("should take valid label strings", function() {
                 var i = 0;
@@ -47,6 +47,37 @@
                     }
                 }
             })
+        });
+
+        describe("descriptions", function() {
+            var classifier = new Whichpet();
+            var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
+
+            var i = 0;
+            for (i ; i < validLabels.length; i++) {
+                classifier.addLabels(validLabels[i]);
+            }
+
+            it("should take valid descriptions", function() {
+                classifier.addData("cat", "meow purr sits on lap rasguño");
+                classifier.addData("dog", "bark woof wag fetch");
+
+                assert.equal(classifier.classify("rasguño"), "cat");
+                assert.equal(classifier.classify("bark something"), "dog");
+            });
+
+            it("should reject invalid descriptions", function() {
+                var invalidDescription = [{}, /t/, [], 1];
+                var i = 0;
+                for (i; i < invalidDescription.length; i++) {
+                    try {
+                        classifier.addData("cat",{});
+                        assert.fail();
+                    } catch (e) {
+                        assert.equal(e.message, "Invalid label or description");
+                    }
+                }
+            });
         });
     });
 
