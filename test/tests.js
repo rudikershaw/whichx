@@ -60,7 +60,7 @@
 
             it("should take valid descriptions", function() {
                 classifier.addData("cat", "meow purr sits on lap rasguño");
-                classifier.addData("dog", "bark woof wag fetch");
+                classifier.addData("dog", "bark woof wag sits fetch");
 
                 assert.equal(classifier.classify("rasguño"), "cat");
                 assert.equal(classifier.classify("bark something"), "dog");
@@ -79,6 +79,35 @@
                 }
             });
         });
-    });
 
+        describe("classification", function() {
+            var classifier = new Whichpet();
+            var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
+
+            var i = 0;
+            for (i ; i < validLabels.length; i++) {
+                classifier.addLabels(validLabels[i]);
+            }
+
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
+
+            it("should classify text 'correctly'", function() {
+                assert.equal(classifier.classify("sits"), "cat");
+                assert.equal(classifier.classify("bark"), "dog");
+
+                classifier.addData("dog", "sits sits");
+                assert.equal(classifier.classify("sits"), "dog");
+            });
+
+            it("should classify by most instances when unsure", function() {
+                classifier.addData("dog", "test");
+                assert.equal(classifier.classify("never"), "dog");
+            });
+
+            it("should not be confused by unknown words", function() {
+                assert.equal(classifier.classify("meow unknown"), "cat");
+            });
+        });
+    });
 })();

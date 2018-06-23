@@ -104,9 +104,8 @@ function Whichpet() {
 
     // A non-zero prior estimate to prevent 0 based probability calculations.
     function mEstimate() {
-        // TODO - Define a reliable m-estimate.
         var total = typesMap.total;
-        return 1 / total.wordTotal;
+        return 1 / (total.wordTotal * 100);
     }
 
     // Stop words including tcount & wordtotal (because they are key words in the maps used to store the data).
