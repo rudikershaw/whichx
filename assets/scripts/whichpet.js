@@ -13,10 +13,11 @@ function Whichpet() {
 
     // Add a label or list of labels to the classifier
     this.addLabels = function(labels) {
+        var i = 0;
         if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
             typesMap[labels.toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
         } else if (labels instanceof Array) {
-            for (var i = 0; i < labels.length; i++) {
+            for (i; i < labels.length; i++) {
                 if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
                     typesMap[labels[i].toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
                 } else {
@@ -30,16 +31,18 @@ function Whichpet() {
 
     // Add word data from a description to a specified label.
     this.addData = function(label, description) {
+        var type, wordArray, i, word;
+        var total = typesMap.total;
+
         if (label in typesMap && typeof description === "string") {
-            var type = typesMap[label];
-            var total = typesMap.total;
+            type = typesMap[label];
             type.tcount = type.tcount + 1;
             total.tcount = total.tcount + 1;
-            var wordArray = processToArray(description);
+            wordArray = processToArray(description);
             // Check whether each word exists against that label and the total.
             // If it does increment the tcount, otherwise add the word.
-            for (var i = 0; i < wordArray.length; i++) {
-                var word = wordArray[i];
+            for (i = 0; i < wordArray.length; i++) {
+                word = wordArray[i];
                 // Add/Increment word to specific label.
                 if (word in type) {
                     type[word] = type[word] + 1;
@@ -62,34 +65,20 @@ function Whichpet() {
 
     // Take a description and find the most likely label for it.
     this.classify = function(description) {
+        var wordArray, bestChance, bestLabel, typeName,
+            type, typeChance;
+
         if (typeof description === "string" && description.length > 0) {
-            var wordArray = processToArray(description);
-            var total = typesMap.total;
-            var bestChance = 0;
-            var bestLabel = "cat";
+            wordArray = processToArray(description);
+            bestChance = 0;
+            bestLabel = "pet";
+
             // Loop through types working out the chance of the description being
             // for this type. If better than bestChance then bestChange <- chance.
-            for (var typeName in typesMap) {
+            for (typeName in typesMap) {
                 if (typesMap.hasOwnProperty(typeName)) {
-                    var type = typesMap[typeName];
-                    var typeChance = 0;
-                    // Loop through words and work out probability of type given each word.
-                    // Multiply each word's probability by total probability to determine type probability.
-                    for (var i = 0; i < wordArray.length; i++) {
-                        var typeWordCount = (typeof type[wordArray[i]] !== "undefined" ? type[wordArray[i]] : mEstimate());
-                        var totalWordCount = (typeof total[wordArray[i]] !== "undefined" ? total[wordArray[i]] : mEstimate());
-                        // Bayes' theorem calculation.
-                        var p1 = (typeWordCount / type.wordTotal) * (type.tcount / total.tcount);
-                        var p2 = ((totalWordCount - typeWordCount / (total.wordTotal - type.wordTotal)) * ((total.tcount - type.tcount) / total.tcount));
-                        var wordChance = p1 / (p1 + p2);
-                        if (typeChance <= 0) {
-                            typeChance = wordChance;
-                        } else {
-                            typeChance = typeChance * wordChance;
-                        }
-                    }
-                    // Multiply final probability by overall probability that it is of this type to weight by most popular types.
-                    typeChance = typeChance * (type.tcount / total.tcount);
+                    type = typesMap[typeName];
+                    typeChance = getTypeChance(type, wordArray);
                     if (typeChance > bestChance) {
                         bestChance = typeChance;
                         bestLabel = typeName;
@@ -101,6 +90,30 @@ function Whichpet() {
             throw new Error("Invalid description");
         }
     };
+
+    // Loop through words and work out probability of type given each word.
+    // Multiply each word's probability by total probability to determine type probability.
+    function getTypeChance(type, words) {
+        var i, typeWordCount, totalWordCount, p1, p2, wordChance;
+        var typeChance = 0;
+        var total = typesMap.total;
+
+        for (i = 0; i < words.length; i++) {
+            typeWordCount = (typeof type[words[i]] !== "undefined" ? type[words[i]] : mEstimate());
+            totalWordCount = (typeof total[words[i]] !== "undefined" ? total[words[i]] : mEstimate());
+            // Bayes' theorem calculation.
+            p1 = (typeWordCount / type.wordTotal) * (type.tcount / total.tcount);
+            p2 = ((totalWordCount - typeWordCount / (total.wordTotal - type.wordTotal)) * ((total.tcount - type.tcount) / total.tcount));
+            wordChance = p1 / (p1 + p2);
+            if (typeChance <= 0) {
+                typeChance = wordChance;
+            } else {
+                typeChance = typeChance * wordChance;
+            }
+        }
+        // Multiply final probability by overall probability that it is of this type to weight by most popular types.
+        return typeChance * (type.tcount / total.tcount);
+    }
 
     // A non-zero prior estimate to prevent 0 based probability calculations.
     function mEstimate() {
@@ -126,13 +139,14 @@ function Whichpet() {
 
     // Process the description into an array of pertinent standardized lower case words.
     function processToArray(description) {
+        var i = 0;
         if (typeof description === "string") {
             // Remove special characters.
             description = description.replace(/[^a-zA-Z ]/g, "");
             // Lower case.
             description = description.toLowerCase();
             // Remove all stop words
-            for (var i = 0; i < STOPWORDS.length; i++) {
+            for (i; i < STOPWORDS.length; i++) {
                 description = description.replace(new RegExp(" " + STOPWORDS[i] + " ", "g"), " ");
             }
             // Remove extra spaces.
