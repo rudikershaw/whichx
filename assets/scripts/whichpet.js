@@ -13,11 +13,11 @@ function Whichpet() {
 
     // Add a label or list of labels to the classifier
     this.addLabels = function(labels) {
-        if (typeof labels === "string" && labels.length > 0 && !(labels in typesMap)) {
+        if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
             typesMap[labels.toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
         } else if (labels instanceof Array) {
             for (var i = 0; i < labels.length; i++) {
-                if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i] in typesMap)) {
+                if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
                     typesMap[labels[i].toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
                 } else {
                     throw new Error("Invalid label");
