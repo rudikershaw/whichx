@@ -1,10 +1,14 @@
 (function(){
+
     var assert = require("assert");
     var Whichpet = require("../assets/scripts/whichpet.js");
 
     describe("Whichpet", function() {
+
         describe("constructor", function() {
+
             var classifier = new Whichpet();
+
             it("should create an object", function() {
                 assert.equal(typeof classifier, "object");
             });
@@ -25,6 +29,7 @@
         });
 
         describe("labels", function() {
+
             var classifier = new Whichpet();
             var validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
             var invalidLabels = ["total", "Total", "constructor", "cat", {}, /test/, 1];
@@ -50,6 +55,7 @@
         });
 
         describe("descriptions", function() {
+
             var classifier = new Whichpet();
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
@@ -67,8 +73,10 @@
             });
 
             it("should reject invalid descriptions", function() {
+
                 var invalidDescription = [{}, /t/, [], 1];
                 var i = 0;
+
                 for (i; i < invalidDescription.length; i++) {
                     try {
                         classifier.addData("cat",{});
@@ -81,6 +89,7 @@
         });
 
         describe("classification", function() {
+
             var classifier = new Whichpet();
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 

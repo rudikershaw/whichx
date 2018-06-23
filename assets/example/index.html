@@ -5,11 +5,11 @@
         <script src="../scripts/whichpet.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Noto+Serif:400,400italic,700,700italic" rel="stylesheet" type="text/css" />
-        <script>           
+        <script>
             $(document).ready(function(){
-                // Create the Whichpet object. 
+                // Create the Whichpet object.
                 var whichpet = new Whichpet();
-		            // Define details of popup. If classifier guesses right, re-inforce data,
+		        // Define details of popup. If classifier guesses right, re-inforce data,
                 // otherwise ask while label to add description to.
                 $('#input input[type="button"]').click(function(){
                     var label = $('#input').find('select option:selected').val();
@@ -17,7 +17,7 @@
                     whichpet.addData(label, description);
                     $('div.popup').fadeOut(function(){
                         $('div.buttons').show();
-                        $('#input').hide();                 
+                        $('#input').hide();
                     });
                 });
                 $('input[name="yes"]').click(function(){
@@ -29,15 +29,14 @@
                     $('div.buttons').hide();
                     $('#input').show();
                 });
-		            // Set up Whichpet to try and guess animal label.
+		        // Set up Whichpet to try and guess animal label.
                 $('#which-pet input[type="button"]').click(function(){
                     var description = $('#which-pet').find('textarea').val();
                     $('div.popup h2').text('Are you describing a '+whichpet.classify(description)+'?');
                     $('div.popup').fadeIn();
                 });
                 // Load labels into data set.
-                var labels = ["cat","dog","fish","horse","bird","reptile"];
-                whichpet.addLabels(labels);
+                whichpet.addLabels(["cat","dog","fish","horse","bird","reptile"]);
                 // Load JSON training set and input training set into data map.
                 // Note - getJSON over local file protocol doesn't work well.
                 $.getJSON("training-set.json", function(data) {
@@ -91,7 +90,7 @@
                 <form id="which-pet">
                     <p><textarea name="description" rows="3" maxlength="200" ></textarea></p>
                     <p><input type="button" value="Which Pet" /></p>
-                </form>      
+                </form>
             </div>
         </div>
     </body>

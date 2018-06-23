@@ -1,6 +1,6 @@
 # Whichpet
 
-Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. The ```whichpet.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichpet.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of descriptions you can put labels to.
+Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. The ```whichpet.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichpet.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of descriptions you can put labels to. To see a working demo you can also go to http://www.rudikershaw.com/articles/whichpet.
 
 ## Usage
 
