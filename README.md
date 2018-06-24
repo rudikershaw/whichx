@@ -1,42 +1,56 @@
 # Whichpet
 
-Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. The ```whichpet.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichpet.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of descriptions you can put labels to. To see a working demo you can also go to http://www.rudikershaw.com/articles/whichpet.
+Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. It is a very small library with a very simple API and no dependencies. To see a working demo you can also go to http://www.rudikershaw.com/articles/whichpet.
+
+## Installation
+
+```bash
+$ npm install whichpet
+```
 
 ## Usage
 
+If you are using Node start by requiring whichpet.
+
+```js
+var Whichpet = require("whichpet");
+```
+
 Simply define a new Whichpet object. This object represents your dataset, the labels that you want your data classified into, as well as the means to add and classify descriptions.
 ```js
-    // Define your whichpet object.
-    var whichpet = new Whichpet();
+// Define your whichpet object.
+var whichpet = new Whichpet();
 ```
 
 After this you will want to add the labels you wish to give to the types of descriptions you wish to classify.
 ```js
-    // Define an array of labels for description types.
-    var labels = ["cat","dog","fish","horse","bird","reptile"];
-    // Add your labels to the whichpet object.
-    whichpet.addLabels(labels);
-    // Add an extra single label to the whichpet object.
-    whichpet.addLabels("pokemon");
+// Define an array of labels for description types.
+var labels = ["cat","dog","fish","horse","bird","reptile"];
+// Add your labels to the whichpet object.
+whichpet.addLabels(labels);
+// Add an extra single label to the whichpet object.
+whichpet.addLabels("pokemon");
 ```
 
 Now you can add descriptions to each label. These descriptions, with their labels, act as your training set data.
 ```js
-    // Add a description and its label to the data set.
-    whichpet.addData("pokemon", "loyal and bright yellow with a lightning shaped tail");
-    // ... Add more here.
+// Add a description and its label to the data set.
+whichpet.addData("pokemon", "loyal and bright yellow with a lightning shaped tail");
+// ... Add more here.
 ```
 
 With enough data (the more the better), you can provide a description on it's own and ask the classifier which label it thinks it belongs to.
 ```js
-    // Which pet am I talking about?
-    var pet = whichpet.classify("Its yellow and shoots lightning");
-    console.log("It's a " + pet + "!");
+// Which pet am I talking about?
+var pet = whichpet.classify("Its yellow and shoots lightning");
+console.log("It's a " + pet + "!");
 ```
 
 That's it. Enjoy.
 
 ## Contributing
+
+The ```whichpet.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichpet.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of descriptions you can put labels to.
 
 To get starting making changes to the project you will need to;
 
