@@ -91,6 +91,21 @@ function WhichX() {
         }
     };
 
+    // Exports the WhichX internal data representation learned from provided
+    // labeled text. Please see th typesMap comments for more details.
+    this.export = function() {
+        return typesMap;
+    };
+
+    // Imports a previously exported typesMap. This will write over any data this instance has already learned.
+    this.import = function(importedTypesMap) {
+        var newTotal = importedTypesMap.total;
+        if (newTotal === "undefined" || newTotal.tcount === "undefined" || newTotal.wordTotal === "undefined") {
+            throw new Error("Import invalid. This doesn't look like it was exported from a prior model.");
+        }
+        typesMap = importedTypesMap;
+    };
+
     // Loop through words and work out probability of type given each word.
     // Multiply each word's probability by total probability to determine type probability.
     function getTypeChance(type, words) {

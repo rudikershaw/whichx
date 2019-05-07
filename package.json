@@ -13,9 +13,8 @@
     "url": "git+https://github.com/rudikershaw/whichx.git"
   },
   "keywords": [
-    "text",
-    "bayes",
-    "classifier"
+    "naive", "bayes", "text", "classifier", "machine-learning", "nlp", "natural-language-processing",
+    "bayesian", "text-classifier", "bayes-classifier", "naive-bayes-classification", "natural-language"
   ],
   "author": "Rudi Kershaw <alexander_kershaw@hotmail.co.uk> (http://www.rudikershaw.com)",
   "license": "MIT",
