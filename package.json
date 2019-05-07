@@ -1,6 +1,6 @@
 {
   "name": "whichx",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A text description classifier for classifying arbitrary strings into provided labels",
   "main": "whichx.js",
   "scripts": {
@@ -13,8 +13,18 @@
     "url": "git+https://github.com/rudikershaw/whichx.git"
   },
   "keywords": [
-    "naive", "bayes", "text", "classifier", "machine-learning", "nlp", "natural-language-processing",
-    "bayesian", "text-classifier", "bayes-classifier", "naive-bayes-classification", "natural-language"
+    "naive",
+    "bayes",
+    "text",
+    "classifier",
+    "machine-learning",
+    "nlp",
+    "natural-language-processing",
+    "bayesian",
+    "text-classifier",
+    "bayes-classifier",
+    "naive-bayes-classification",
+    "natural-language"
   ],
   "author": "Rudi Kershaw <alexander_kershaw@hotmail.co.uk> (http://www.rudikershaw.com)",
   "license": "MIT",
