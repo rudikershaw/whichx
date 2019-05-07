@@ -2,7 +2,7 @@
 
     var assert = require("assert");
     var Whichx = require("../assets/scripts/whichx.js");
-    
+
     var classificationAssertions = function(classifier) {
         it("should classify text 'correctly'", function() {
             assert.equal(classifier.classify("sits"), "cat");
@@ -22,7 +22,7 @@
         });
     };
 
-    describe("Whichx", function() {
+    describe("WhichX", function() {
 
         describe("constructor", function() {
 
@@ -78,10 +78,7 @@
             var classifier = new Whichx();
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
-            var i = 0;
-            for (i ; i < validLabels.length; i++) {
-                classifier.addLabels(validLabels[i]);
-            }
+            classifier.addLabels(validLabels);
 
             it("should take valid descriptions", function() {
                 classifier.addData("cat", "meow purr sits on lap rasguño");
@@ -112,11 +109,7 @@
             var classifier = new Whichx();
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
-            var i = 0;
-            for (i ; i < validLabels.length; i++) {
-                classifier.addLabels(validLabels[i]);
-            }
-
+            classifier.addLabels(validLabels);
             classifier.addData("cat", "meow purr sits on lap");
             classifier.addData("dog", "bark woof wag fetch");
 
