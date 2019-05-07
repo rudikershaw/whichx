@@ -1,5 +1,5 @@
-// Defining the Whichpet object.
-function Whichpet() {
+// Defining the Whichx object.
+function WhichX() {
     // Internet explorer 9 or later required, or any other popular browser.
 
     // Map (using object notation) of description types.
@@ -159,7 +159,7 @@ function Whichpet() {
     }
 }
 
-// Export whichpet function if using node.
+// Export whichx function if using node.
 if (module && module.exports) {
-    module.exports = Whichpet;
+    module.exports = WhichX;
 }

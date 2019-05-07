@@ -1,34 +1,34 @@
-# Whichpet
+# WhichX
 
-Whichpet is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. It is a very small library with a very simple API and no dependencies. To see a working demo you can also go to http://www.rudikershaw.com/articles/whichpet.
+WhichX is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. It is a very small library with a very simple API and no dependencies. To see a working demo you can also go to http://www.rudikershaw.com/articles/whichpet.
 
 ## Installation
 
 ```bash
-$ npm install whichpet
+$ npm install whichx
 ```
 
 ## Usage
 
-If you are using Node start by requiring whichpet.
+If you are using Node start by requiring whichx.
 
 ```js
-var Whichpet = require("whichpet");
+var whichpet = require("whichx");
 ```
 
-Simply define a new Whichpet object. This object represents your dataset, the labels that you want your data classified into, as well as the means to add and classify descriptions.
+Simply define a new WhichX object. This object represents your dataset, the labels that you want your data classified into, as well as the means to add and classify descriptions.
 ```js
-// Define your whichpet object.
-var whichpet = new Whichpet();
+// Define your whichx object.
+var whichpet = new WhichX();
 ```
 
 After this you will want to add the labels you wish to give to the types of descriptions you wish to classify.
 ```js
 // Define an array of labels for description types.
 var labels = ["cat","dog","fish","horse","bird","reptile"];
-// Add your labels to the whichpet object.
+// Add your labels to the whichx object.
 whichpet.addLabels(labels);
-// Add an extra single label to the whichpet object.
+// Add an extra single label to the whichx object.
 whichpet.addLabels("pokemon");
 ```
 
@@ -50,7 +50,7 @@ That's it. Enjoy.
 
 ## Contributing
 
-The ```whichpet.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichpet.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript Whichpet object can be used to classify any types of descriptions you can put labels to.
+The ```whichx.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichx.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript WhichX object can be used to classify any types of descriptions you can put labels to.
 
 To get starting making changes to the project you will need to;
 

@@ -1,20 +1,20 @@
 (function(){
 
     var assert = require("assert");
-    var Whichpet = require("../assets/scripts/whichpet.js");
+    var Whichx = require("../assets/scripts/whichx.js");
 
-    describe("Whichpet", function() {
+    describe("Whichx", function() {
 
         describe("constructor", function() {
 
-            var classifier = new Whichpet();
+            var classifier = new Whichx();
 
             it("should create an object", function() {
                 assert.equal(typeof classifier, "object");
             });
 
             it("should create a unique object", function() {
-                var newClassifier = new Whichpet();
+                var newClassifier = new Whichx();
                 newClassifier.property = 1;
                 assert.equal(classifier.property, undefined);
             });
@@ -30,7 +30,7 @@
 
         describe("labels", function() {
 
-            var classifier = new Whichpet();
+            var classifier = new Whichx();
             var validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
             var invalidLabels = ["total", "Total", "constructor", "cat", {}, /test/, 1];
 
@@ -56,7 +56,7 @@
 
         describe("descriptions", function() {
 
-            var classifier = new Whichpet();
+            var classifier = new Whichx();
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
             var i = 0;
@@ -90,7 +90,7 @@
 
         describe("classification", function() {
 
-            var classifier = new Whichpet();
+            var classifier = new Whichx();
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
             var i = 0;
