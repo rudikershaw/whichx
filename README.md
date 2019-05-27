@@ -1,4 +1,6 @@
+[![MIT Licence][licence-image]][licence-url]
 [![Build status][travis-image]][travis-url]
+[![NPM Version][npm-image]][npm-url]
 # WhichX
 
 WhichX is a [Naive Bayes' Classifier](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) written in Javascript for classifying short text descriptions into categories. It is a very small library with a very simple API and no dependencies. To see a working demo you can also go to http://www.rudikershaw.com/articles/whichpet.
@@ -61,5 +63,9 @@ To get starting making changes to the project you will need to;
 
 As long as any changes you make pass all linting checks and unit tests, feel free to raise a pull request.
 
+[licence-image]: http://img.shields.io/npm/l/gulp-rtlcss.svg?style=flat
+[licence-url]: https://tldrlegal.com/license/mit-license
 [travis-image]: https://travis-ci.org/rudikershaw/whichx.svg?branch=master
 [travis-url]: https://travis-ci.org/rudikershaw/whichx
+[npm-image]: http://img.shields.io/npm/v/whichx.svg?style=flat
+[npm-url]: https://www.npmjs.org/package/whichx
