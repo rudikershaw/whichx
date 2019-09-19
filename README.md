@@ -16,7 +16,7 @@ $ npm install whichx
 If you are using Node start by requiring whichx.
 
 ```js
-var whichpet = require("whichx");
+var WhichX = require("whichx");
 ```
 
 Simply define a new WhichX object. This object represents your dataset, the labels that you want your data classified into, as well as the means to add and classify descriptions.
