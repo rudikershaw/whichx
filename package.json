@@ -1,6 +1,6 @@
 {
   "name": "whichx",
-  "version": "2.2.0-SNAPSHOT",
+  "version": "2.1.2",
   "description": "A text description classifier for classifying arbitrary strings into provided labels",
   "main": "assets/scripts/whichx.js",
   "scripts": {
