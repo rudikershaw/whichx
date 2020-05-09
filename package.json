@@ -2,7 +2,7 @@
   "name": "whichx",
   "version": "2.2.0-SNAPSHOT",
   "description": "A text description classifier for classifying arbitrary strings into provided labels",
-  "main": "whichx.js",
+  "main": "assets/scripts/whichx.js",
   "scripts": {
     "lint": "echo 'Linting...' && jshint assets/scripts/*.js && eslint assets/scripts/*.js",
     "pretest": "npm run lint -s",
