@@ -51,18 +51,6 @@ console.log("It's a " + pet + "!");
 
 That's it. Enjoy.
 
-## Contributing
-
-The ```whichx.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichx.js``` can be used. In the ```index.html``` we use the example of a classifier designed to guess which type of pet is being described in a short description. But the Javascript WhichX object can be used to classify any types of descriptions you can put labels to.
-
-To get starting making changes to the project you will need to;
-
-1. Install node and npm.
-2. Run ```npm install``` in the root of the project.
-3. Run ```npm test -s``` to run the linters and unit tests.
-
-As long as any changes you make pass all linting checks and unit tests, feel free to raise a pull request.
-
 [licence-image]: http://img.shields.io/npm/l/gulp-rtlcss.svg?style=flat
 [licence-url]: https://tldrlegal.com/license/mit-license
 [travis-image]: https://travis-ci.org/rudikershaw/whichx.svg?branch=master
