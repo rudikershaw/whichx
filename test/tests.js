@@ -45,6 +45,10 @@
             it("object should have key vars hidden", function() {
                 assert.ok(!(classifier.typesMap) && !(classifier.STOPWORDS) && !(classifier.processToArray));
             });
+
+            it("object should have default classify value", function() {
+                assert.equal(classifier.classify("no labels"), undefined);
+            });
         });
 
         describe("labels", function() {
@@ -114,6 +118,13 @@
             classifier.addData("dog", "bark woof wag fetch");
 
             classificationAssertions(classifier);
+
+            it("should successfully classify with only 1 label", function() {
+                classifier = new Whichx();
+                classifier.addLabels("pokemon");
+                classifier.addData("pokemon", "pikachu yellow lightning");
+                assert.equal(classifier.classify("pokemanz?"), "pokemon");
+            });
         });
 
         describe("imported export", function() {
