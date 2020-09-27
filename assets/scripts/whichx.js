@@ -8,7 +8,7 @@ function WhichX() {
     // The word total represents the total number of words added against that label.
     var typesMap = {
         // Total must exist and be incremented for probability calculations.
-        "total": { "tcount": 0, "wordTotal": 0 }
+        "total": { "tcount": 0, "wordTotal": 1 }
     };
 
     // Add a label or list of labels to the classifier
@@ -34,8 +34,8 @@ function WhichX() {
         var type, wordArray, i, word;
         var total = typesMap.total;
 
-        if (label in typesMap && typeof description === "string") {
-            type = typesMap[label];
+        if (label.toLowerCase() in typesMap && typeof description === "string") {
+            type = typesMap[label.toLowerCase()];
             type.tcount = type.tcount + 1;
             total.tcount = total.tcount + 1;
             wordArray = processToArray(description);
@@ -70,7 +70,7 @@ function WhichX() {
 
         if (typeof description === "string" && description.length > 0) {
             wordArray = processToArray(description);
-            bestChance = 0;
+            bestChance = -1;
             bestLabel = undefined;
 
             // Loop through types working out the chance of the description being
@@ -92,7 +92,7 @@ function WhichX() {
     };
 
     // Exports the WhichX internal data representation learned from provided
-    // labeled text. Please see th typesMap comments for more details.
+    // labeled text. Please see the typesMap comments for more details.
     this.export = function() {
         return typesMap;
     };
