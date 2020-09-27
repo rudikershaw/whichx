@@ -71,7 +71,7 @@ function WhichX() {
         if (typeof description === "string" && description.length > 0) {
             wordArray = processToArray(description);
             bestChance = 0;
-            bestLabel = "pet";
+            bestLabel = undefined;
 
             // Loop through types working out the chance of the description being
             // for this type. If better than bestChance then bestChange <- chance.
