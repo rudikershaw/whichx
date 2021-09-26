@@ -1,6 +1,34 @@
 // Defining the Whichx object.
-function WhichX() {
+function WhichX(config) {
     // Internet explorer 9 or later required, or any other popular browser.
+
+    var STOPWORDS;
+
+    // Stop words including tcount & wordtotal (because they are key words in the maps used to store the data).
+    var DEFAULT_STOPWORDS = ["a", "all", "am", "an", "and", "any", "are", "as", "at", "be", "because",
+        "been", "being", "but", "by", "count", "could", "did", "do", "does", "doing", "during",
+        "each", "few", "for", "had", "has", "have", "having", "he", "hed", "hes",
+        "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how",
+        "hows", "i", "id", "im", "ive", "if", "in", "into", "is", "it", "its", "itself",
+        "lets", "me", "more", "most", "my", "myself", "of", "off", "on", "once",
+        "only", "or", "other", "ought", "our", "ours", "ourselves", "over", "own",
+        "same", "she", "shes", "should", "so", "some", "such", "than", "that",
+        "thats", "the", "their", "theirs", "them", "themselves", "then", "there",
+        "theres", "these", "they", "theyd", "theyll", "theyre", "theyve", "this",
+        "those", "through", "to", "too", "until", "was", "we", "wed", "well", "were",
+        "weve", "what", "whats", "when", "whens", "where", "wheres", "which",
+        "while", "who", "whos", "whom", "why", "whys", "with", "wordtotal", "would", "you", "youd",
+        "youll", "youre", "your", "youve", "yours", "yourself", "yourselves"];
+
+    // Configure WhichX object.
+    if (!config || !config.stopwords) {
+        STOPWORDS = DEFAULT_STOPWORDS;
+    } else if (config.stopwords instanceof Array) {
+        STOPWORDS = config.stopwords.slice();
+        STOPWORDS.push("tcount", "wordtotal");
+    } else {
+        throw new Error("The `stopwords` variable of your configuration needs to be an array.");
+    }
 
     // Map (using object notation) of description types.
     // Each type containing a map of words and counts.
@@ -136,22 +164,6 @@ function WhichX() {
         return 1 / (total.wordTotal * 100);
     }
 
-    // Stop words including tcount & wordtotal (because they are key words in the maps used to store the data).
-    var STOPWORDS = ["a", "all", "am", "an", "and", "any", "are", "as", "at", "be", "because",
-        "been", "being", "but", "by", "count", "could", "did", "do", "does", "doing", "during",
-        "each", "few", "for", "had", "has", "have", "having", "he", "hed", "hes",
-        "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how",
-        "hows", "i", "id", "im", "ive", "if", "in", "into", "is", "it", "its", "itself",
-        "lets", "me", "more", "most", "my", "myself", "of", "off", "on", "once",
-        "only", "or", "other", "ought", "our", "ours", "ourselves", "over", "own",
-        "same", "she", "shes", "should", "so", "some", "such", "than", "that",
-        "thats", "the", "their", "theirs", "them", "themselves", "then", "there",
-        "theres", "these", "they", "theyd", "theyll", "theyre", "theyve", "this",
-        "those", "through", "to", "too", "until", "was", "we", "wed", "well", "were",
-        "weve", "what", "whats", "when", "whens", "where", "wheres", "which",
-        "while", "who", "whos", "whom", "why", "whys", "with", "wordtotal", "would", "you", "youd",
-        "youll", "youre", "your", "youve", "yours", "yourself", "yourselves"];
-
     // Process the description into an array of pertinent standardized lower case words.
     function processToArray(description) {
         var i = 0;
@@ -162,12 +174,12 @@ function WhichX() {
             description = description.toLowerCase();
             // Remove all stop words
             for (i; i < STOPWORDS.length; i++) {
-                description = description.replace(new RegExp(" " + STOPWORDS[i] + " ", "g"), " ");
+                description = description.replace(new RegExp("\\b" + STOPWORDS[i] + "\\b", "g"), " ");
             }
             // Remove extra spaces.
             description = description.replace(/\s+/g, " ");
             // Return array of processed words.
-            return description.split(" ");
+            return description.trim().split(" ");
         } else {
             throw new Error("Invalid description");
         }

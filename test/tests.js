@@ -141,5 +141,27 @@
 
             classificationAssertions(classifier);
         });
+
+        describe("stop words", function() {
+            var classifier = new Whichx();
+            classifier.addLabels(["cat", "dog"]);
+            classifier.addData("cat", "the the most more meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
+
+            it("defaults should be ignored if no others specified", function() {
+                assert.equal(classifier.classify("the the most more bark"), "dog");
+                assert.equal(classifier.classify("purr lap"), "cat");
+            });
+
+            classifier = new Whichx({ stopwords: ["bark", "woof", "wag"] });
+            classifier.addLabels(["cat", "dog"]);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch sniff");
+
+            it("configured stop words should be ignored if specified", function() {
+                assert.equal(classifier.classify("bark woof wag purr"), "cat");
+                assert.equal(classifier.classify("fetch"), "dog");
+            });
+        });
     });
 })();
