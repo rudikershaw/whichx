@@ -1,7 +1,7 @@
 (function(){
 
     var assert = require("assert");
-    var Whichx = require("../assets/scripts/whichx.js");
+    var Whichx = require("../assets/scripts/whichx");
 
     var classificationAssertions = function(classifier) {
         it("should classify text 'correctly'", function() {
