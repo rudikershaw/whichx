@@ -1,6 +1,6 @@
 # FAQs
 
-### How can I export or import a previously generated model?
+## How can I export or import a previously generated model?
 
 If you have a small dataset it is advisable to store the data for your model separately in your preferred format and then rebuild this model each time. Doing it this way will prevent you from tightly coupling your code to this library.
 
@@ -19,7 +19,7 @@ var model = retrieveModel();
 whichpet.export(model);
 ```
 
-### Can I use WhichX for classification on languages other than English?
+## Can I use WhichX for classification on languages other than English?
 
 WhichX will currently work with any language that has word boundaries (separates individual words with spaces, etc). There are however some extra steps you should take for configuring your WhichX object for other languages.
 
