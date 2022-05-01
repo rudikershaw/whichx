@@ -49,11 +49,12 @@ function WhichX(config) {
                 if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
                     typesMap[labels[i].toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
                 } else {
-                    throw new Error("Invalid label");
+                    if (labels[i].toLowerCase() in typesMap) throw new Error(`Duplicate label ${labels[i]}. Labels must be uniques`)
+                    else throw new Error(`Invalid label ${labels[i]} of type ${typeof labels[i]}. We expected a string.`);
                 }
             }
         } else {
-            throw new Error("Invalid label");
+            throw new Error(`Invalid label ${labels} of type ${typeof labels}. We expect an Array or a string.`);
         }
     };
 
@@ -87,7 +88,8 @@ function WhichX(config) {
                 total.wordTotal = total.wordTotal + 1;
             }
         } else {
-            throw new Error("Invalid label or description");
+            if (!(label.toLowerCase() in typesMap)) throw new Error(`Invalid label ${label}. It doesn't belong to the existing labels: ${Object.keys(typesMap)}.`)
+            else throw new Error(`Invalid description ${description} of type ${typeof description}. We expected a non empty string.`);
         }
     };
 
@@ -115,7 +117,7 @@ function WhichX(config) {
             }
             return bestLabel;
         } else {
-            throw new Error("Invalid description");
+            throw new Error(`Invalid description ${description} of type ${typeof description}. We expected a non empty string.`)
         }
     };
 
@@ -181,7 +183,7 @@ function WhichX(config) {
             // Return array of processed words.
             return description.trim().split(" ");
         } else {
-            throw new Error("Invalid description");
+            throw new Error(`Invalid description ${description} of type ${typeof description}. We expected a non empty string.`)
         }
     }
 }
