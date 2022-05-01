@@ -11,7 +11,7 @@
  * @property {number} wordTotal The total number of words added against that label
  */
 
-/** @typedef {Record<string, LabelEntry>} TypeMap The map of labels and descriptions*/
+/** @typedef {Record<string, LabelEntry>} TypeMap The map of labels and descriptions */
 
 /**
  * Defining the Whichx object.
@@ -20,10 +20,10 @@
 function WhichX(config) {
     // Internet explorer 9 or later required, or any other popular browser.
 
-    let STOPWORDS;
+    var STOPWORDS;
 
     // Stop words including tcount & wordtotal (because they are key words in the maps used to store the data).
-    const DEFAULT_STOPWORDS = ["a", "all", "am", "an", "and", "any", "are", "as", "at", "be", "because",
+    var DEFAULT_STOPWORDS = ["a", "all", "am", "an", "and", "any", "are", "as", "at", "be", "because",
         "been", "being", "but", "by", "count", "could", "did", "do", "does", "doing", "during",
         "each", "few", "for", "had", "has", "have", "having", "he", "hed", "hes",
         "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how",
@@ -53,7 +53,7 @@ function WhichX(config) {
     // The tcount represents the total number of those labels.
     // The word total represents the total number of words added against that label.
     /** @type {TypeMap} */
-    let typesMap = {
+    var typesMap = {
         // Total must exist and be incremented for probability calculations.
         "total": { "tcount": 0, "wordTotal": 1 }
     };
@@ -62,7 +62,7 @@ function WhichX(config) {
      * Add a label or list of labels to the classifier
      * @param {string | string[]} labels A label or a list of labels to add
      */
-    this.addLabels = function (labels) {
+    this.addLabels = function(labels) {
         var i = 0;
         if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
             typesMap[labels.toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
@@ -71,12 +71,12 @@ function WhichX(config) {
                 if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
                     typesMap[labels[i].toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
                 } else {
-                    if (labels[i].toLowerCase() in typesMap) throw new Error(`Duplicate label ${labels[i]}. Labels must be uniques`)
-                    else throw new Error(`Invalid label ${labels[i]} of type ${typeof labels[i]}. We expected a string.`);
+                    if (labels[i].toLowerCase() in typesMap) throw new Error("Duplicate label " + labels[i] + ". Labels must be uniques");
+                    else throw new Error("Invalid label " + labels[i] + " of type " + typeof labels[i] + ". We expected a string.");
                 }
             }
         } else {
-            throw new Error(`Invalid label ${labels} of type ${typeof labels}. We expect an Array or a string.`);
+            throw new Error("Invalid label " + labels + " of type " + typeof labels + ". We expect an Array or a string.");
         }
     };
 
@@ -85,7 +85,7 @@ function WhichX(config) {
      * @param {string} label The label the description must be attached to
      * @param {string} description The description matching the label
      */
-    this.addData = function (label, description) {
+    this.addData = function(label, description) {
         var type, wordArray, i, word;
         var total = typesMap.total;
 
@@ -114,8 +114,8 @@ function WhichX(config) {
                 total.wordTotal = total.wordTotal + 1;
             }
         } else {
-            if (!(label.toLowerCase() in typesMap)) throw new Error(`Invalid label ${label}. It doesn't belong to the existing labels: ${Object.keys(typesMap)}.`)
-            else throw new Error(`Invalid description ${description} of type ${typeof description}. We expected a non empty string.`);
+            if (!(label.toLowerCase() in typesMap)) throw new Error("Invalid label " + label + ". It doesn't belong to the existing labels: " + Object.keys(typesMap) + ".");
+            else throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
     };
 
@@ -124,7 +124,7 @@ function WhichX(config) {
      * @param {string} description The description to classify
      * @returns {string} The label that best matches the description
      */
-    this.classify = function (description) {
+    this.classify = function(description) {
         var wordArray, bestChance, bestLabel, typeName,
             type, typeChance;
 
@@ -147,7 +147,7 @@ function WhichX(config) {
             }
             return bestLabel;
         } else {
-            throw new Error(`Invalid description ${description} of type ${typeof description}. We expected a non empty string.`)
+            throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
     };
 
@@ -156,7 +156,7 @@ function WhichX(config) {
      * labeled text. Please see the typesMap comments for more details.
      * @returns {TypeMap} A TypeMap that can be sringified and saved for later import in WhichX
      */
-    this.export = function () {
+    this.export = function() {
         return typesMap;
     };
 
@@ -164,7 +164,7 @@ function WhichX(config) {
      * Imports a previously exported typesMap. This will write over any data this instance has already learned.
      * @param {TypeMap} importedTypesMap The types map previously exported from WhichX
      */
-    this.import = function (importedTypesMap) {
+    this.import = function(importedTypesMap) {
         var newTotal = importedTypesMap.total;
         if (newTotal === undefined || newTotal.tcount === undefined || newTotal.wordTotal === undefined) {
             throw new Error("Import invalid. This doesn't look like it was exported from a prior model.");
@@ -220,9 +220,9 @@ function WhichX(config) {
         if (typeof description === "string") {
             // Remove special characters.
             description = description
-                .normalize('NFD')
+                .normalize("NFD")
                 .toLowerCase()
-                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[\u0300-\u036f]/g, "")
                 .replace(/[^a-zA-Z ]/g, "");
             // Lower case.
             description = description.toLowerCase();
@@ -235,7 +235,7 @@ function WhichX(config) {
             // Return array of processed words.
             return description.trim().split(" ");
         } else {
-            throw new Error(`Invalid description ${description} of type ${typeof description}. We expected a non empty string.`)
+            throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
     }
 }
