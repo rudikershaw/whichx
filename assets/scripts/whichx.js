@@ -130,7 +130,7 @@ function WhichX(config) {
     // Imports a previously exported typesMap. This will write over any data this instance has already learned.
     this.import = function(importedTypesMap) {
         var newTotal = importedTypesMap.total;
-        if (newTotal === "undefined" || newTotal.tcount === "undefined" || newTotal.wordTotal === "undefined") {
+        if (newTotal === undefined || newTotal.tcount === undefined || newTotal.wordTotal === undefined) {
             throw new Error("Import invalid. This doesn't look like it was exported from a prior model.");
         }
         typesMap = importedTypesMap;
