@@ -2,7 +2,7 @@
 
 /**
  * @typedef {Object} Config The WhichX configuration options
- * @property {string[]} stopwords The list of stop words in the text. (TODO: explain what is a stopword and their impact)
+ * @property {string[]} stopwords The list of stop words in the text. Those words will be ignored during the classification process.
  */
 
 /**
@@ -218,7 +218,7 @@ function WhichX(config) {
     function processToArray(description) {
         var i = 0;
         if (typeof description === "string") {
-            // Remove special characters. TODO: Do we need to remove the accented letters?
+            // Remove special characters.
             description = description
                 .normalize('NFD')
                 .toLowerCase()
