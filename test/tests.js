@@ -71,7 +71,7 @@
                         classifier.addLabels(invalidLabels[i]);
                         assert.ok(false);
                     } catch (e) {
-                        assert.equal(e.message, "Invalid label");
+                        assert.equal(e.message, "Invalid label " + invalidLabels[i] + " of type " + typeof invalidLabels[i] + ". We expect an Array or a string.");
                     }
                 }
             })
@@ -102,7 +102,7 @@
                         classifier.addData("cat",{});
                         assert.fail();
                     } catch (e) {
-                        assert.equal(e.message, "Invalid label or description");
+                        assert.equal(e.message, "Invalid description [object Object] of type object. We expected a non empty string.");
                     }
                 }
             });
