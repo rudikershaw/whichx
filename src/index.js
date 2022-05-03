@@ -1,4 +1,22 @@
-// Defining the Whichx object.
+// @ts-check
+
+/**
+ * @typedef {Object} Config The WhichX configuration options
+ * @property {string[]} stopwords The list of stop words in the text. Those words will be ignored during the classification process.
+ */
+
+/**
+ * @typedef {Object} LabelEntry
+ * @property {number} tcount The total number of those labels.
+ * @property {number} wordTotal The total number of words added against that label
+ */
+
+/** @typedef {Record<string, LabelEntry>} TypeMap The map of labels and descriptions */
+
+/**
+ * Defining the Whichx object.
+ * @param {Config=} config The optional configuration for WhichX
+ */
 function WhichX(config) {
     // Internet explorer 9 or later required, or any other popular browser.
 
@@ -34,12 +52,16 @@ function WhichX(config) {
     // Each type containing a map of words and counts.
     // The tcount represents the total number of those labels.
     // The word total represents the total number of words added against that label.
+    /** @type {TypeMap} */
     var typesMap = {
         // Total must exist and be incremented for probability calculations.
         "total": { "tcount": 0, "wordTotal": 1 }
     };
 
-    // Add a label or list of labels to the classifier
+    /**
+   * Add a label or list of labels to the classifier
+   * @param {string | string[]} labels A label or a list of labels to add
+   */
     this.addLabels = function(labels) {
         var i = 0;
         if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
@@ -49,20 +71,25 @@ function WhichX(config) {
                 if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
                     typesMap[labels[i].toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
                 } else {
-                    throw new Error("Invalid label");
+                    if (labels[i].toLowerCase() in typesMap) throw new Error("Duplicate label " + labels[i] + ". Labels must be uniques");
+                    else throw new Error("Invalid label " + labels[i] + " of type " + typeof labels[i] + ". We expected a string.");
                 }
             }
         } else {
-            throw new Error("Invalid label");
+            throw new Error("Invalid label " + labels + " of type " + typeof labels + ". We expect an Array or a string.");
         }
     };
 
-    // Add word data from a description to a specified label.
+    /**
+   * Add word data from a description to a specified label.
+   * @param {string} label The label the description must be attached to
+   * @param {string} description The description matching the label
+   */
     this.addData = function(label, description) {
         var type, wordArray, i, word;
         var total = typesMap.total;
 
-        if (label.toLowerCase() in typesMap && typeof description === "string") {
+        if (label.toLowerCase() in typesMap && typeof description === "string" && description.length > 0) {
             type = typesMap[label.toLowerCase()];
             type.tcount = type.tcount + 1;
             total.tcount = total.tcount + 1;
@@ -87,11 +114,16 @@ function WhichX(config) {
                 total.wordTotal = total.wordTotal + 1;
             }
         } else {
-            throw new Error("Invalid label or description");
+            if (!(label.toLowerCase() in typesMap)) throw new Error("Invalid label " + label + ". It doesn't belong to the existing labels: " + Object.keys(typesMap) + ".");
+            else throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
     };
 
-    // Take a description and find the most likely label for it.
+    /**
+   * Take a description and find the most likely label for it.
+   * @param {string} description The description to classify
+   * @returns {string} The label that best matches the description
+   */
     this.classify = function(description) {
         var wordArray, bestChance, bestLabel, typeName,
             type, typeChance;
@@ -115,27 +147,38 @@ function WhichX(config) {
             }
             return bestLabel;
         } else {
-            throw new Error("Invalid description");
+            throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
     };
 
-    // Exports the WhichX internal data representation learned from provided
-    // labeled text. Please see the typesMap comments for more details.
+    /**
+   * Exports the WhichX internal data representation learned from provided
+   * labeled text. Please see the typesMap comments for more details.
+   * @returns {TypeMap} A TypeMap that can be sringified and saved for later import in WhichX
+   */
     this.export = function() {
         return typesMap;
     };
 
-    // Imports a previously exported typesMap. This will write over any data this instance has already learned.
+    /**
+   * Imports a previously exported typesMap. This will write over any data this instance has already learned.
+   * @param {TypeMap} importedTypesMap The types map previously exported from WhichX
+   */
     this.import = function(importedTypesMap) {
         var newTotal = importedTypesMap.total;
-        if (newTotal === "undefined" || newTotal.tcount === "undefined" || newTotal.wordTotal === "undefined") {
+        if (newTotal === undefined || newTotal.tcount === undefined || newTotal.wordTotal === undefined) {
             throw new Error("Import invalid. This doesn't look like it was exported from a prior model.");
         }
         typesMap = importedTypesMap;
     };
 
-    // Loop through words and work out probability of type given each word.
-    // Multiply each word's probability by total probability to determine type probability.
+    /**
+   * Loop through words and work out probability of type given each word.
+   * Multiply each word's probability by total probability to determine type probability.
+   * @param {LabelEntry} type The label entry to test
+   * @param {string[]} words The words list in the description
+   * @returns {number} The percentage for the description to belong to that label entry
+   */
     function getTypeChance(type, words) {
         var i, typeWordCount, totalWordCount, p1, p2, wordChance;
         var typeChance = 0;
@@ -158,20 +201,29 @@ function WhichX(config) {
         return typeChance * (type.tcount / total.tcount);
     }
 
-    // A non-zero prior estimate to prevent 0 based probability calculations.
+    /**
+   * A non-zero prior estimate to prevent 0 based probability calculations.
+   * @returns {number} The non-zero probablity
+   */
     function mEstimate() {
         var total = typesMap.total;
         return 1 / (total.wordTotal * 100);
     }
 
-    // Process the description into an array of pertinent standardized lower case words.
+    /**
+   * Process the description into an array of pertinent standardized lower case words.
+   * @param {string} description The description to analyse
+   * @returns {string[]} The list of normalized words contained in the description
+   */
     function processToArray(description) {
         var i = 0;
         if (typeof description === "string") {
             // Remove special characters.
-            description = description.replace(/[^a-zA-Z ]/g, "");
+            description = (description["normalize"] ? description["normalize"]("NFD") : description) // jshint ignore:line
             // Lower case.
-            description = description.toLowerCase();
+                .toLowerCase()
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z ]/g, "");
             // Remove all stop words
             for (i; i < STOPWORDS.length; i++) {
                 description = description.replace(new RegExp("\\b" + STOPWORDS[i] + "\\b", "g"), " ");
@@ -181,7 +233,7 @@ function WhichX(config) {
             // Return array of processed words.
             return description.trim().split(" ");
         } else {
-            throw new Error("Invalid description");
+            throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
     }
 }
