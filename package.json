@@ -2,17 +2,22 @@
   "name": "whichx",
   "version": "2.3.0-SNAPSHOT",
   "description": "A text description classifier for classifying arbitrary strings into provided labels",
-  "main": "assets/scripts/whichx.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "echo 'Linting...' && jshint assets/scripts/*.js && eslint assets/scripts/*.js",
-    "pretest": "npm run lint -s",
+    "lint": "echo 'Linting...' && jshint src/*.js && eslint src/*.js && jshint test/*.js && eslint test/*.js",
     "test": "echo 'Testing...' && mocha test/",
-    "build": "npm ci && npm test"
+    "typescript": "echo 'Build types definition...' && tsc",
+    "minify": "echo 'Minify sources...' && minify src/index.js > dist/index.js",
+    "build": "npm ci && npm test && npm run typescript && npm run minify"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rudikershaw/whichx.git"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "naive",
     "bayes",
@@ -37,10 +42,13 @@
     "eslint": "^5.16.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-mocha": "^6.3.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
     "jshint": "^2.10.2",
-    "mocha": "^9.0.0"
+    "minify": "^8.0.4",
+    "mocha": "^9.0.0",
+    "typescript": "^4.6.4"
   }
 }

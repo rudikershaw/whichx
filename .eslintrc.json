@@ -1,5 +1,11 @@
 {
-    "extends": "standard",
+    "plugins": ["mocha"],
+    "extends": ["standard", "plugin:mocha/recommended"],
+    "env": {
+        "commonjs": true,
+        "node": true,
+        "mocha": true
+    },
     "rules": {
         "indent": ["error", 4],
         "space-before-function-paren": ["error", "never"],

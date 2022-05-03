@@ -59,9 +59,9 @@ function WhichX(config) {
     };
 
     /**
-     * Add a label or list of labels to the classifier
-     * @param {string | string[]} labels A label or a list of labels to add
-     */
+   * Add a label or list of labels to the classifier
+   * @param {string | string[]} labels A label or a list of labels to add
+   */
     this.addLabels = function(labels) {
         var i = 0;
         if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
@@ -81,10 +81,10 @@ function WhichX(config) {
     };
 
     /**
-     * Add word data from a description to a specified label.
-     * @param {string} label The label the description must be attached to
-     * @param {string} description The description matching the label
-     */
+   * Add word data from a description to a specified label.
+   * @param {string} label The label the description must be attached to
+   * @param {string} description The description matching the label
+   */
     this.addData = function(label, description) {
         var type, wordArray, i, word;
         var total = typesMap.total;
@@ -120,10 +120,10 @@ function WhichX(config) {
     };
 
     /**
-     * Take a description and find the most likely label for it.
-     * @param {string} description The description to classify
-     * @returns {string} The label that best matches the description
-     */
+   * Take a description and find the most likely label for it.
+   * @param {string} description The description to classify
+   * @returns {string} The label that best matches the description
+   */
     this.classify = function(description) {
         var wordArray, bestChance, bestLabel, typeName,
             type, typeChance;
@@ -152,18 +152,18 @@ function WhichX(config) {
     };
 
     /**
-     * Exports the WhichX internal data representation learned from provided
-     * labeled text. Please see the typesMap comments for more details.
-     * @returns {TypeMap} A TypeMap that can be sringified and saved for later import in WhichX
-     */
+   * Exports the WhichX internal data representation learned from provided
+   * labeled text. Please see the typesMap comments for more details.
+   * @returns {TypeMap} A TypeMap that can be sringified and saved for later import in WhichX
+   */
     this.export = function() {
         return typesMap;
     };
 
     /**
-     * Imports a previously exported typesMap. This will write over any data this instance has already learned.
-     * @param {TypeMap} importedTypesMap The types map previously exported from WhichX
-     */
+   * Imports a previously exported typesMap. This will write over any data this instance has already learned.
+   * @param {TypeMap} importedTypesMap The types map previously exported from WhichX
+   */
     this.import = function(importedTypesMap) {
         var newTotal = importedTypesMap.total;
         if (newTotal === undefined || newTotal.tcount === undefined || newTotal.wordTotal === undefined) {
@@ -173,12 +173,12 @@ function WhichX(config) {
     };
 
     /**
-     * Loop through words and work out probability of type given each word.
-     * Multiply each word's probability by total probability to determine type probability.
-     * @param {LabelEntry} type The label entry to test
-     * @param {string[]} words The words list in the description
-     * @returns {number} The percentage for the description to belong to that label entry
-     */
+   * Loop through words and work out probability of type given each word.
+   * Multiply each word's probability by total probability to determine type probability.
+   * @param {LabelEntry} type The label entry to test
+   * @param {string[]} words The words list in the description
+   * @returns {number} The percentage for the description to belong to that label entry
+   */
     function getTypeChance(type, words) {
         var i, typeWordCount, totalWordCount, p1, p2, wordChance;
         var typeChance = 0;
@@ -202,30 +202,28 @@ function WhichX(config) {
     }
 
     /**
-     * A non-zero prior estimate to prevent 0 based probability calculations.
-     * @returns {number} The non-zero probablity
-     */
+   * A non-zero prior estimate to prevent 0 based probability calculations.
+   * @returns {number} The non-zero probablity
+   */
     function mEstimate() {
         var total = typesMap.total;
         return 1 / (total.wordTotal * 100);
     }
 
     /**
-     * Process the description into an array of pertinent standardized lower case words.
-     * @param {string} description The description to analyse
-     * @returns {string[]} The list of normalized words contained in the description
-     */
+   * Process the description into an array of pertinent standardized lower case words.
+   * @param {string} description The description to analyse
+   * @returns {string[]} The list of normalized words contained in the description
+   */
     function processToArray(description) {
         var i = 0;
         if (typeof description === "string") {
             // Remove special characters.
-            description = description
-                .normalize("NFD")
+            description = (description["normalize"] ? description["normalize"]("NFD") : description) // jshint ignore:line
+            // Lower case.
                 .toLowerCase()
                 .replace(/[\u0300-\u036f]/g, "")
                 .replace(/[^a-zA-Z ]/g, "");
-            // Lower case.
-            description = description.toLowerCase();
             // Remove all stop words
             for (i; i < STOPWORDS.length; i++) {
                 description = description.replace(new RegExp("\\b" + STOPWORDS[i] + "\\b", "g"), " ");
