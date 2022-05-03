@@ -1,8 +1,6 @@
 
 ## Contributing
 
-The ```whichx.js``` (located in ```assets/scripts```) is where all the logic is and the rest (in ```assets/example```) of the project serves only as an example of how the ```whichx.js``` can be used. In the ```index.html``` we have an example of a classifier designed to guess which type of pet is being described in a short description. If you make any changes, please check that the example still works.
-
 To get started making changes to the project you will need to;
 
 1. Install node and npm.
