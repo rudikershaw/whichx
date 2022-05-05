@@ -1,4 +1,3 @@
-/* eslint-disable mocha/no-setup-in-describe */
 var assert = require("assert");
 var Whichx = require("../src");
 var classificationAssertions = function(classifier) {
@@ -66,7 +65,7 @@ describe("WhichX", function() {
                     classifier.addLabels(invalidLabels[i]);
                     assert.ok(false);
                 } catch (e) {
-                    assert.equal(e.message, "Invalid label " + invalidLabels[i] + " of type " + typeof invalidLabels[i] + ". We expect an Array or a string.");
+                    assert.equal(e.message, "Invalid label '" + invalidLabels[i] + "' of type '" + typeof invalidLabels[i] + "'. Expected an Array or a string.");
                 }
             }
         });
@@ -95,7 +94,7 @@ describe("WhichX", function() {
                     classifier.addData("cat", {});
                     assert.fail();
                 } catch (e) {
-                    assert.equal(e.message, "Invalid description [object Object] of type object. We expected a non empty string.");
+                    assert.equal(e.message, "Invalid description '[object Object]' of type 'object'. Expected a non-empty string.");
                 }
             }
         });
@@ -155,23 +154,17 @@ describe("WhichX", function() {
             assert.equal(classifier.classify("fetch"), "dog");
         });
     });
+
     describe("normalization", function() {
         var classifier = new Whichx();
         classifier.addLabels(["summer"]);
         classifier.addData("summer", "été");
+        classifier.addData("summer", "ete");
 
         it("should normalize words with diacritic", function() {
             assert.deepEqual(classifier.export(), {
-                summer: {
-                    ete: 1,
-                    tcount: 1,
-                    wordTotal: 1
-                },
-                total: {
-                    ete: 1,
-                    tcount: 1,
-                    wordTotal: 2
-                }
+                summer: { ete: 2, tcount: 2, wordTotal: 2 },
+                total: { ete: 2, tcount: 2, wordTotal: 3 }
             });
         });
     });
