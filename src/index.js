@@ -55,21 +55,21 @@ function WhichX(config) {
     /** @type {TypeMap} */
     var typesMap = {
         // Total must exist and be incremented for probability calculations.
-        "total": { "tcount": 0, "wordTotal": 1 }
+        total: { tcount: 0, wordTotal: 1 }
     };
 
-   /**
-    * Add a label or list of labels to the classifier.
-    * @param {string | string[]} labels A label or a list of labels to add.
-    */
+    /**
+     * Add a label or list of labels to the classifier.
+     * @param {string | string[]} labels A label or a list of labels to add.
+     */
     this.addLabels = function(labels) {
         var i = 0;
         if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
-            typesMap[labels.toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
+            typesMap[labels.toLowerCase()] = { tcount: 0, wordTotal: 0 };
         } else if (labels instanceof Array) {
             for (i; i < labels.length; i++) {
                 if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
-                    typesMap[labels[i].toLowerCase()] = { "tcount": 0, "wordTotal": 0 };
+                    typesMap[labels[i].toLowerCase()] = { tcount: 0, wordTotal: 0 };
                 } else {
                     if (labels[i].toLowerCase() in typesMap) {
                         throw new Error("Duplicate label " + labels[i] + ". Labels must be unique.");
@@ -83,11 +83,11 @@ function WhichX(config) {
         }
     };
 
-   /**
-    * Add word data from a description to a specified label.
-    * @param {string} label The label the description must be attached to.
-    * @param {string} description The description matching the label.
-    */
+    /**
+     * Add word data from a description to a specified label.
+     * @param {string} label The label the description must be attached to.
+     * @param {string} description The description matching the label.
+     */
     this.addData = function(label, description) {
         var type, wordArray, i, word;
         var total = typesMap.total;
@@ -125,11 +125,11 @@ function WhichX(config) {
         }
     };
 
-   /**
-    * Take a description and find the most likely label for it.
-    * @param {string} description The description to classify.
-    * @returns {string} The label that best matches the description.
-    */
+    /**
+     * Take a description and find the most likely label for it.
+     * @param {string} description The description to classify.
+     * @returns {string} The label that best matches the description.
+     */
     this.classify = function(description) {
         var wordArray, bestChance, bestLabel, typeName,
             type, typeChance;
@@ -142,7 +142,7 @@ function WhichX(config) {
             // Loop through types working out the chance of the description being
             // for this type. If better than bestChance then bestChange <- chance.
             for (typeName in typesMap) {
-                if (typesMap.hasOwnProperty(typeName)) {
+                if (Object.prototype.hasOwnProperty.call(typesMap, typeName)) {
                     type = typesMap[typeName];
                     typeChance = getTypeChance(type, wordArray);
                     if (typeChance > bestChance) {
@@ -157,19 +157,19 @@ function WhichX(config) {
         }
     };
 
-   /**
-    * Exports the WhichX internal data representation learned from provided.
-    * labeled text. Please see the typesMap comments for more details.
-    * @returns {TypeMap} A TypeMap that can be saved for later import in WhichX.
-    */
+    /**
+     * Exports the WhichX internal data representation learned from provided.
+     * labeled text. Please see the typesMap comments for more details.
+     * @returns {TypeMap} A TypeMap that can be saved for later import in WhichX.
+     */
     this.export = function() {
         return typesMap;
     };
 
-   /**
-    * Imports a previously exported model. This will write over any data this instance has already learned.
-    * @param {TypeMap} importedTypesMap The types map previously exported from WhichX
-    */
+    /**
+     * Imports a previously exported model. This will write over any data this instance has already learned.
+     * @param {TypeMap} importedTypesMap The types map previously exported from WhichX
+     */
     this.import = function(importedTypesMap) {
         var newTotal = importedTypesMap.total;
         if (newTotal === undefined || newTotal.tcount === undefined || newTotal.wordTotal === undefined) {
@@ -178,13 +178,13 @@ function WhichX(config) {
         typesMap = importedTypesMap;
     };
 
-   /**
-    * Loop through words and work out probability of a type given each word.
-    * Multiply each word's probability by total probability to determine type probability.
-    * @param {LabelEntry} type The label entry to test.
-    * @param {string[]} words The words list in the description.
-    * @returns {number} The probability that the description belongs to that given label.
-    */
+    /**
+     * Loop through words and work out probability of a type given each word.
+     * Multiply each word's probability by total probability to determine type probability.
+     * @param {LabelEntry} type The label entry to test.
+     * @param {string[]} words The words list in the description.
+     * @returns {number} The probability that the description belongs to that given label.
+     */
     function getTypeChance(type, words) {
         var i, typeWordCount, totalWordCount, p1, p2, wordChance;
         var typeChance = 0;
@@ -207,26 +207,26 @@ function WhichX(config) {
         return typeChance * (type.tcount / total.tcount);
     }
 
-   /**
-    * A non-zero prior estimate to prevent 0 based probability calculations.
-    * @returns {number} The non-zero probability.
-    */
+    /**
+     * A non-zero prior estimate to prevent 0 based probability calculations.
+     * @returns {number} The non-zero probability.
+     */
     function mEstimate() {
         var total = typesMap.total;
         return 1 / (total.wordTotal * 100);
     }
 
-   /**
-    * Process the description into an array of standardized lower case words.
-    * @param {string} description The description to process.
-    * @returns {string[]} The list of processed words contained in the description.
-    */
+    /**
+     * Process the description into an array of standardized lower case words.
+     * @param {string} description The description to process.
+     * @returns {string[]} The list of processed words contained in the description.
+     */
     function processToArray(description) {
         var i = 0;
         if (typeof description === "string") {
             // Remove special characters.
-            if (description["normalize"]) {
-                description = description["normalize"]("NFD");
+            if (description.normalize) {
+                description = description.normalize("NFD");
             }
             description = description.toLowerCase()
                 .replace(/[\u0300-\u036f]/g, "")
@@ -240,7 +240,7 @@ function WhichX(config) {
             // Return array of processed words.
             return description.trim().split(" ");
         } else {
-            throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
+            throw new Error("Invalid description " + description + " of type " + typeof description + ". Expected string.");
         }
     }
 }

@@ -1,6 +1,12 @@
 {
     "plugins": ["mocha"],
-    "extends": ["standard", "plugin:mocha/recommended"],
+    "extends": [
+        "standard",
+        "plugin:es5/no-es2016", 
+        "plugin:mocha/recommended",
+        "plugin:node/recommended",
+        "plugin:import/recommended"
+    ],
     "env": {
         "commonjs": true,
         "node": true,
@@ -10,6 +16,10 @@
         "indent": ["error", 4],
         "space-before-function-paren": ["error", "never"],
         "quotes": [2, "double"],
-        "semi": ["error", "always"]
+        "semi": ["error", "always"],
+        "no-var": "off", // Not compatible with code pre ES6 / IE9 support.
+        "no-trailing-spaces": "off", // Too many false positives.
+        "mocha/no-setup-in-describe": "off", // Incompatible with dynamically generated tests.
+        "mocha/no-hooks-for-single-case": "off" // Don't report warnings.
     }
 }

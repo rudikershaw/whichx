@@ -1,6 +1,7 @@
 var assert = require("assert");
 var Whichx = require("../src");
-var classificationAssertions = function(classifier) {
+
+function classificationAssertions(classifier) {
     it("should classify text 'correctly'", function() {
         assert.equal(classifier.classify("sits"), "cat");
         assert.equal(classifier.classify("bark"), "dog");
@@ -75,7 +76,9 @@ describe("WhichX", function() {
         var classifier = new Whichx();
         var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
-        classifier.addLabels(validLabels);
+        before(function() {
+            classifier.addLabels(validLabels);
+        });
 
         it("should take valid descriptions", function() {
             classifier.addData("cat", "meow purr sits on lap rasguño");
@@ -104,9 +107,11 @@ describe("WhichX", function() {
         var classifier = new Whichx();
         var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
-        classifier.addLabels(validLabels);
-        classifier.addData("cat", "meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch");
+        before(function() {
+            classifier.addLabels(validLabels);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
+        });
 
         classificationAssertions(classifier);
 
@@ -123,43 +128,46 @@ describe("WhichX", function() {
         var validLabels = ["cat", "dog"];
         var dataExport;
 
-        classifier.addLabels(validLabels);
-        classifier.addData("cat", "meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch");
-        dataExport = classifier.export();
-        classifier = new Whichx();
-        classifier.import(dataExport);
+        before(function() {
+            classifier.addLabels(validLabels);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
+            dataExport = classifier.export();
+            classifier = new Whichx();
+            classifier.import(dataExport);
+        });
 
         classificationAssertions(classifier);
     });
 
-    describe("stop words", function() {
-        var classifier = new Whichx();
-        classifier.addLabels(["cat", "dog"]);
-        classifier.addData("cat", "the the most more meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch");
-
+    describe("stop words", function() {       
         it("defaults should be ignored if no others specified", function() {
+            var classifier = new Whichx();
+            classifier.addLabels(["cat", "dog"]);
+            classifier.addData("cat", "the the most more meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
             assert.equal(classifier.classify("the the most more bark"), "dog");
             assert.equal(classifier.classify("purr lap"), "cat");
         });
 
-        classifier = new Whichx({ stopwords: ["bark", "woof", "wag"] });
-        classifier.addLabels(["cat", "dog"]);
-        classifier.addData("cat", "meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch sniff");
-
         it("configured stop words should be ignored if specified", function() {
+            var classifier = new Whichx({ stopwords: ["bark", "woof", "wag"] });
+            classifier.addLabels(["cat", "dog"]);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch sniff");
             assert.equal(classifier.classify("bark woof wag purr"), "cat");
             assert.equal(classifier.classify("fetch"), "dog");
         });
     });
 
     describe("normalization", function() {
-        var classifier = new Whichx();
-        classifier.addLabels(["summer"]);
-        classifier.addData("summer", "été");
-        classifier.addData("summer", "ete");
+        var classifier;
+        before(function() {
+            classifier = new Whichx();
+            classifier.addLabels(["summer"]);
+            classifier.addData("summer", "été");
+            classifier.addData("summer", "ete");
+        });
 
         it("should normalize words with diacritic", function() {
             assert.deepEqual(classifier.export(), {
