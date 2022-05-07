@@ -9,7 +9,8 @@
     "test": "npm run lint && mocha test/ && echo 'Testing complete.'",
     "typescript": "tsc && echo 'Type definitions built.'",
     "minify": "uglifyjs src/index.js -o dist/index.js --source-map && echo 'Sources minified.'",
-    "build": "npm ci && npm test && npm run typescript && npm run minify && echo 'Build success.'"
+    "build": "npm ci && npm test && npm run typescript && npm run minify && echo 'Build success.'",
+    "prepack": "npm run build"
   },
   "repository": {
     "type": "git",
