@@ -1,6 +1,6 @@
 {
   "name": "whichx",
-  "version": "3.0.0",
+  "version": "3.1.0-SNAPSHOT",
   "description": "A text description classifier for classifying arbitrary strings into provided labels",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
