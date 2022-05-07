@@ -64,19 +64,11 @@ function WhichX(config) {
      */
     this.addLabels = function(labels) {
         var i = 0;
-        if (typeof labels === "string" && labels.length > 0 && !(labels.toLowerCase() in typesMap)) {
-            typesMap[labels.toLowerCase()] = { tcount: 0, wordTotal: 0 };
+        if (typeof labels === "string") {
+            addLabel(labels);
         } else if (labels instanceof Array) {
             for (i; i < labels.length; i++) {
-                if (typeof labels[i] === "string" && labels[i].length > 0 && !(labels[i].toLowerCase() in typesMap)) {
-                    typesMap[labels[i].toLowerCase()] = { tcount: 0, wordTotal: 0 };
-                } else {
-                    if (labels[i].toLowerCase() in typesMap) {
-                        throw new Error("Duplicate label " + labels[i] + ". Labels must be unique.");
-                    } else {
-                        throw new Error("Invalid label '" + labels[i] + "' of type '" + typeof labels[i] + "'. Expected string.");
-                    }
-                }
+                addLabel(labels[i]);
             }
         } else {
             throw new Error("Invalid label '" + labels + "' of type '" + typeof labels + "'. Expected an Array or a string.");
@@ -177,6 +169,26 @@ function WhichX(config) {
         }
         typesMap = importedTypesMap;
     };
+
+    /**
+     * Add a label to the classifier.
+     * @param {string} label A label to add.
+     */
+    function addLabel(label) {
+        if (typeof label !== "string") {
+            throw new Error("Invalid label of type '" + typeof label + "'. Expected string.");
+        } else if (label.length === 0 || label.trim().length === 0) {
+            throw new Error("Label strings must be non-empty.");
+        } else if (label.toLowerCase() === "total") {
+            throw new Error("Invalid label. 'total' is a reserved keyword.");
+        } else if (({})[label.toLowerCase()] !== undefined) {
+            throw new Error("Label '" + label.toLowerCase() + "' must not replace a property of Object.");
+        } else if (label.toLowerCase() in typesMap) {
+            throw new Error("Duplicate label '" + label + "'.");
+        } else {
+            typesMap[label.toLowerCase()] = { tcount: 0, wordTotal: 0 };
+        }
+    }
 
     /**
      * Loop through words and work out probability of a type given each word.
