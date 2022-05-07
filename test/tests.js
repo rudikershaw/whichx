@@ -50,7 +50,9 @@ describe("WhichX", function() {
     describe("labels", function() {
         var classifier = new Whichx();
         var validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
-        var invalidLabels = ["total", "Total", "constructor", "cat", {}, /test/, 1];
+        var duplicateLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
+        var nonStringNonArrayLabels = [{}, /test/, 1, true, () => {}];
+        var propertiesOfObjectLabels = ["constructor", "__proto__"];
 
         it("should take valid label strings", function() {
             var i = 0;
@@ -59,14 +61,47 @@ describe("WhichX", function() {
             }
         });
 
-        it("should reject invalid label strings", function() {
+        it("should reject duplicate labels", function() {
             var i = 0;
-            for (i; i < invalidLabels.length; i++) {
+            for (i; i < duplicateLabels.length; i++) {
                 try {
-                    classifier.addLabels(invalidLabels[i]);
-                    assert.ok(false);
+                    classifier.addLabels(duplicateLabels[i]);
+                    assert.ok(false, "Label should have been rejected.");
                 } catch (e) {
-                    assert.equal(e.message, "Invalid label '" + invalidLabels[i] + "' of type '" + typeof invalidLabels[i] + "'. Expected an Array or a string.");
+                    assert.equal(e.message, "Duplicate label '" + duplicateLabels[i] + "'.");
+                }
+            }
+        });
+
+        it("should reject reserved label 'total'", function() {
+            try {
+                classifier.addLabels("total");
+                assert.ok(false, "Label should have been rejected.");
+            } catch (e) {
+                assert.equal(e.message, "Invalid label. 'total' is a reserved keyword.");
+            }
+        });
+
+        it("should reject properties of object", function() {
+            var i = 0;
+            for (i; i < propertiesOfObjectLabels.length; i++) {
+                try {
+                    classifier.addLabels(propertiesOfObjectLabels[i]);
+                    assert.ok(false, "Label should have been rejected.");
+                } catch (e) {
+                    assert.equal(e.message, "Label '" + propertiesOfObjectLabels[i].toLowerCase() + "' must not replace a property of Object.");
+                }
+            }
+        });
+
+        it("should reject non-string or non-array labels", function() {
+            var i = 0;
+            for (i; i < nonStringNonArrayLabels.length; i++) {
+                try {
+                    classifier.addLabels(nonStringNonArrayLabels[i]);
+                    assert.ok(false, "Label should have been rejected.");
+                } catch (e) {
+                    assert.equal(e.message, "Invalid label '" + nonStringNonArrayLabels[i] + "' of type '" + typeof nonStringNonArrayLabels[i] + "'. Expected an Array or a string.");
                 }
             }
         });
