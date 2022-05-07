@@ -5,18 +5,21 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "echo 'Linting...' && jshint src/*.js && eslint src/*.js && jshint test/*.js && eslint test/*.js",
-    "test": "echo 'Testing...' && mocha test/",
-    "typescript": "echo 'Build types definition...' && tsc",
-    "minify": "echo 'Minify sources...' && minify src/index.js > dist/index.js",
-    "build": "npm ci && npm test && npm run typescript && npm run minify"
+    "lint": "eslint src/*.js && eslint test/*.js && echo 'Linting complete.'",
+    "test": "npm run lint && mocha test/ && echo 'Testing complete.'",
+    "typescript": "tsc && echo 'Type definitions built.'",
+    "minify": "uglifyjs src/index.js -o dist/index.js --source-map && echo 'Sources minified.'",
+    "build": "npm ci && npm test && npm run typescript && npm run minify && echo 'Build success.'"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rudikershaw/whichx.git"
   },
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "naive",
@@ -39,16 +42,14 @@
   },
   "homepage": "https://github.com/rudikershaw/whichx#readme",
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.12.0",
+    "eslint": "^8.15.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-mocha": "^6.3.0",
-    "eslint-plugin-node": "^6.0.1",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "jshint": "^2.10.2",
-    "minify": "^8.0.4",
-    "mocha": "^9.0.0",
-    "typescript": "^4.6.4"
+    "eslint-plugin-n": "^15.2.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "mocha": "^10.0.0",
+    "typescript": "^4.6.4",
+    "uglify-js": "^3.15.4"
   }
 }

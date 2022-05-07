@@ -1,7 +1,7 @@
-/* eslint-disable mocha/no-setup-in-describe */
 var assert = require("assert");
 var Whichx = require("../src");
-var classificationAssertions = function(classifier) {
+
+function classificationAssertions(classifier) {
     it("should classify text 'correctly'", function() {
         assert.equal(classifier.classify("sits"), "cat");
         assert.equal(classifier.classify("bark"), "dog");
@@ -18,7 +18,7 @@ var classificationAssertions = function(classifier) {
     it("should not be confused by unknown words", function() {
         assert.equal(classifier.classify("meow unknown"), "cat");
     });
-};
+}
 
 describe("WhichX", function() {
     describe("constructor", function() {
@@ -66,7 +66,7 @@ describe("WhichX", function() {
                     classifier.addLabels(invalidLabels[i]);
                     assert.ok(false);
                 } catch (e) {
-                    assert.equal(e.message, "Invalid label " + invalidLabels[i] + " of type " + typeof invalidLabels[i] + ". We expect an Array or a string.");
+                    assert.equal(e.message, "Invalid label '" + invalidLabels[i] + "' of type '" + typeof invalidLabels[i] + "'. Expected an Array or a string.");
                 }
             }
         });
@@ -76,7 +76,9 @@ describe("WhichX", function() {
         var classifier = new Whichx();
         var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
-        classifier.addLabels(validLabels);
+        before(function() {
+            classifier.addLabels(validLabels);
+        });
 
         it("should take valid descriptions", function() {
             classifier.addData("cat", "meow purr sits on lap rasguño");
@@ -95,7 +97,7 @@ describe("WhichX", function() {
                     classifier.addData("cat", {});
                     assert.fail();
                 } catch (e) {
-                    assert.equal(e.message, "Invalid description [object Object] of type object. We expected a non empty string.");
+                    assert.equal(e.message, "Invalid description '[object Object]' of type 'object'. Expected a non-empty string.");
                 }
             }
         });
@@ -105,9 +107,11 @@ describe("WhichX", function() {
         var classifier = new Whichx();
         var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
 
-        classifier.addLabels(validLabels);
-        classifier.addData("cat", "meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch");
+        before(function() {
+            classifier.addLabels(validLabels);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
+        });
 
         classificationAssertions(classifier);
 
@@ -124,54 +128,51 @@ describe("WhichX", function() {
         var validLabels = ["cat", "dog"];
         var dataExport;
 
-        classifier.addLabels(validLabels);
-        classifier.addData("cat", "meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch");
-        dataExport = classifier.export();
-        classifier = new Whichx();
-        classifier.import(dataExport);
+        before(function() {
+            classifier.addLabels(validLabels);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
+            dataExport = classifier.export();
+            classifier = new Whichx();
+            classifier.import(dataExport);
+        });
 
         classificationAssertions(classifier);
     });
 
     describe("stop words", function() {
-        var classifier = new Whichx();
-        classifier.addLabels(["cat", "dog"]);
-        classifier.addData("cat", "the the most more meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch");
-
         it("defaults should be ignored if no others specified", function() {
+            var classifier = new Whichx();
+            classifier.addLabels(["cat", "dog"]);
+            classifier.addData("cat", "the the most more meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch");
             assert.equal(classifier.classify("the the most more bark"), "dog");
             assert.equal(classifier.classify("purr lap"), "cat");
         });
 
-        classifier = new Whichx({ stopwords: ["bark", "woof", "wag"] });
-        classifier.addLabels(["cat", "dog"]);
-        classifier.addData("cat", "meow purr sits on lap");
-        classifier.addData("dog", "bark woof wag fetch sniff");
-
         it("configured stop words should be ignored if specified", function() {
+            var classifier = new Whichx({ stopwords: ["bark", "woof", "wag"] });
+            classifier.addLabels(["cat", "dog"]);
+            classifier.addData("cat", "meow purr sits on lap");
+            classifier.addData("dog", "bark woof wag fetch sniff");
             assert.equal(classifier.classify("bark woof wag purr"), "cat");
             assert.equal(classifier.classify("fetch"), "dog");
         });
     });
+
     describe("normalization", function() {
-        var classifier = new Whichx();
-        classifier.addLabels(["summer"]);
-        classifier.addData("summer", "été");
+        var classifier;
+        before(function() {
+            classifier = new Whichx();
+            classifier.addLabels(["summer"]);
+            classifier.addData("summer", "été");
+            classifier.addData("summer", "ete");
+        });
 
         it("should normalize words with diacritic", function() {
             assert.deepEqual(classifier.export(), {
-                summer: {
-                    ete: 1,
-                    tcount: 1,
-                    wordTotal: 1
-                },
-                total: {
-                    ete: 1,
-                    tcount: 1,
-                    wordTotal: 2
-                }
+                summer: { ete: 2, tcount: 2, wordTotal: 2 },
+                total: { ete: 2, tcount: 2, wordTotal: 3 }
             });
         });
     });
