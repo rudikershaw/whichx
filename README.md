@@ -51,9 +51,11 @@ console.log("It's a " + pet + "!");
 
 That's it. Enjoy.
 
+For questions about the API or additional functionality, please see the [FAQs](documentation/faq.md).
+
 [licence-image]: http://img.shields.io/npm/l/gulp-rtlcss.svg?style=flat
 [licence-url]: https://tldrlegal.com/license/mit-license
-[travis-image]: https://travis-ci.org/rudikershaw/whichx.svg?branch=master
-[travis-url]: https://travis-ci.org/rudikershaw/whichx
+[travis-image]: https://app.travis-ci.com/rudikershaw/whichx.svg?branch=develop
+[travis-url]: https://app.travis-ci.com/rudikershaw/whichx
 [npm-image]: http://img.shields.io/npm/v/whichx.svg?style=flat
 [npm-url]: https://www.npmjs.org/package/whichx
