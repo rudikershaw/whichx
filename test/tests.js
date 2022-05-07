@@ -18,7 +18,7 @@ function classificationAssertions(classifier) {
     it("should not be confused by unknown words", function() {
         assert.equal(classifier.classify("meow unknown"), "cat");
     });
-};
+}
 
 describe("WhichX", function() {
     describe("constructor", function() {
@@ -140,7 +140,7 @@ describe("WhichX", function() {
         classificationAssertions(classifier);
     });
 
-    describe("stop words", function() {       
+    describe("stop words", function() {
         it("defaults should be ignored if no others specified", function() {
             var classifier = new Whichx();
             classifier.addLabels(["cat", "dog"]);
