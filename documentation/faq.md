@@ -16,7 +16,7 @@ That model can then be stored and used to pre-populate another WhichX object.
 ```js
 var whichpet = new WhichX();
 var model = retrieveModel(); 
-whichpet.export(model);
+whichpet.import(model);
 ```
 
 ## Can I use WhichX for classification on languages other than English?
