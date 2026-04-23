@@ -175,6 +175,19 @@ describe("WhichX", function() {
         classificationAssertions(classifier);
     });
 
+    describe("bayes probability calculation", function() {
+        it("should not let common words from a dominant label override distinctive signal from a minority label", function() {
+            var classifier = new Whichx();
+            classifier.addLabels(["sci", "fic"]);
+            var i = 0;
+            for (i; i < 20; i++) {
+                classifier.addData("fic", "story character plot adventure hero villain journey quest magic sword dragon wizard battle kingdom prince princess fantasy world ancient mystery");
+            }
+            classifier.addData("sci", "quantum physics research experiment");
+            assert.equal(classifier.classify("quantum physics research experiment story adventure hero"), "sci");
+        });
+    });
+
     describe("stop words", function() {
         it("defaults should be ignored if no others specified", function() {
             var classifier = new Whichx();

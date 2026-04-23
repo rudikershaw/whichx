@@ -207,7 +207,7 @@ function WhichX(config) {
             totalWordCount = (typeof total[words[i]] !== "undefined" ? total[words[i]] : mEstimate());
             // Bayes' theorem calculation.
             p1 = (typeWordCount / type.wordTotal) * (type.tcount / total.tcount);
-            p2 = ((totalWordCount - typeWordCount / (total.wordTotal - type.wordTotal)) * ((total.tcount - type.tcount) / total.tcount));
+            p2 = ((totalWordCount - typeWordCount) / (total.wordTotal - type.wordTotal)) * ((total.tcount - type.tcount) / total.tcount);
             wordChance = p1 / (p1 + p2);
             if (typeChance <= 0) {
                 typeChance = wordChance;
