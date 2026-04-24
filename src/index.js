@@ -127,21 +127,27 @@ function WhichX(config) {
      * @returns {Record<string, number>} A map of label names to their probability scores.
      */
     this.scores = function(description) {
-        var wordArray, typeName;
+        if (typeof description !== "string" || description.length === 0) {
+            throw new Error("Invalid description " + description + " of type " + typeof description + ". Expected a non empty string.");
+        }
         /** @type {Record<string, number>} */
         var scores = {};
+        var wordArray = processToArray(description);
+        var sum = 0;
 
-        if (typeof description === "string" && description.length > 0) {
-            wordArray = processToArray(description);
-            for (typeName in typesMap) {
-                if (Object.prototype.hasOwnProperty.call(typesMap, typeName) && typeName !== "total") {
-                    scores[typeName] = getTypeChance(typesMap[typeName], wordArray);
-                }
+        Object.keys(typesMap).forEach(function(name) {
+            if (name !== "total") {
+                scores[name] = getTypeChance(typesMap[name], wordArray);
+                sum = sum + scores[name];
             }
-            return scores;
-        } else {
-            throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
+        });
+
+        if (sum > 0) {
+            Object.keys(scores).forEach(function(name) {
+                scores[name] = scores[name] / sum;
+            });
         }
+        return scores;
     };
 
     /**

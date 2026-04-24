@@ -271,6 +271,12 @@ describe("WhichX", function() {
             assert.throws(function() { self.classifier.scores(""); });
             assert.throws(function() { self.classifier.scores(123); });
         });
+
+        it("should return scores that sum to 1", function() {
+            var scores = this.classifier.scores("meow purr bark fetch");
+            var sum = scores.cat + scores.dog;
+            assert.equal(sum, 1);
+        });
     });
 
     describe("normalization", function() {

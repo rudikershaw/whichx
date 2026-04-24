@@ -31,3 +31,25 @@ This can be achieved like so;
 var wordsArray = ["your", "stop", "words", "etc"];
 var whichpet = new WhichX({ stopwords: wordsArray });
 ```
+
+## How can I extend the default stop words instead of replacing them?
+
+Passing a `stopwords` array in the config replaces the defaults entirely. If you would rather keep the built-in defaults and add a few extras of your own, you can access the default list via the static `WhichX.getDefaultStopwords()` method and concatenate to it.
+
+```js
+var extraStopwords = ["meow", "bark"];
+var whichpet = new WhichX({ stopwords: WhichX.getDefaultStopwords().concat(extraStopwords) });
+```
+
+## How do I get the probability score for each label instead of just the best match?
+
+The `classify` method returns only the single best-matching label. If you want to see how the description scored against every label, use the `scores` method instead. It returns an object mapping each label name to its score. The scores sum to 1, so you can read each one as the classifier's confidence that the description belongs to that label.
+
+```js
+var whichpet = new WhichX();
+whichpet.addLabels(["cat", "dog"]);
+whichpet.addData("cat", "meow purr sits on lap");
+whichpet.addData("dog", "bark woof wag fetch");
+
+whichpet.scores("meow"); // { cat: 0.85..., dog: 0.14... }
+```
