@@ -1,81 +1,92 @@
 var assert = require("assert");
 var Whichx = require("../src");
 
-function classificationAssertions(classifier) {
-    it("should classify text 'correctly'", function() {
-        assert.equal(classifier.classify("sits"), "cat");
-        assert.equal(classifier.classify("bark"), "dog");
+var sharedClassificationTests = [
+    {
+        description: "should classify text 'correctly'",
+        test: function() {
+            assert.equal(this.classifier.classify("sits"), "cat");
+            assert.equal(this.classifier.classify("bark"), "dog");
 
-        classifier.addData("dog", "sits sits");
-        assert.equal(classifier.classify("sits"), "dog");
-    });
-
-    it("should classify by most instances when unsure", function() {
-        classifier.addData("dog", "test");
-        assert.equal(classifier.classify("never"), "dog");
-    });
-
-    it("should not be confused by unknown words", function() {
-        assert.equal(classifier.classify("meow unknown"), "cat");
-    });
-}
+            this.classifier.addData("dog", "sits sits");
+            assert.equal(this.classifier.classify("sits"), "dog");
+        }
+    },
+    {
+        description: "should classify by most instances when unsure",
+        test: function() {
+            this.classifier.addData("dog", "test");
+            assert.equal(this.classifier.classify("never"), "dog");
+        }
+    },
+    {
+        description: "should not be confused by unknown words",
+        test: function() {
+            assert.equal(this.classifier.classify("meow unknown"), "cat");
+        }
+    }
+];
 
 describe("WhichX", function() {
     describe("constructor", function() {
-        var classifier = new Whichx();
+        before(function() {
+            this.classifier = new Whichx();
+        });
 
         it("should create an object", function() {
-            assert.equal(typeof classifier, "object");
+            assert.equal(typeof this.classifier, "object");
         });
 
         it("should create a unique object", function() {
             var newClassifier = new Whichx();
             newClassifier.property = 1;
-            assert.equal(classifier.property, undefined);
+            assert.equal(this.classifier.property, undefined);
         });
 
         it("object should have 3 main methods", function() {
-            assert.ok(classifier.addData && classifier.addLabels && classifier.classify);
+            assert.ok(this.classifier.addData && this.classifier.addLabels && this.classifier.classify);
         });
 
         it("object should have key vars hidden", function() {
-            assert.ok(!(classifier.typesMap) && !(classifier.STOPWORDS) && !(classifier.processToArray));
+            assert.ok(!(this.classifier.typesMap) && !(this.classifier.STOPWORDS) && !(this.classifier.processToArray));
         });
 
         it("object should have default classify value", function() {
-            assert.equal(classifier.classify("no labels"), undefined);
+            assert.equal(this.classifier.classify("no labels"), undefined);
         });
     });
 
     describe("labels", function() {
-        var classifier = new Whichx();
-        var validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
-        var duplicateLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
-        var nonStringNonArrayLabels = [{}, /test/, 1, true, () => {}];
-        var propertiesOfObjectLabels = ["constructor", "__proto__"];
+        before(function() {
+            this.classifier = new Whichx();
+            this.validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
+            this.duplicateLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
+            this.nonStringNonArrayLabels = [{}, /test/, 1, true, () => {}];
+            this.propertiesOfObjectLabels = ["constructor", "__proto__"];
+        });
 
         it("should take valid label strings", function() {
             var i = 0;
-            for (i; i < validLabels.length; i++) {
-                classifier.addLabels(validLabels[i]);
+            for (i; i < this.validLabels.length; i++) {
+                this.classifier.addLabels(this.validLabels[i]);
             }
         });
 
         it("should reject duplicate labels", function() {
             var i = 0;
-            for (i; i < duplicateLabels.length; i++) {
+            for (i; i < this.duplicateLabels.length; i++) {
                 try {
-                    classifier.addLabels(duplicateLabels[i]);
+                    this.classifier.addLabels(this.duplicateLabels[i]);
                     assert.ok(false, "Label should have been rejected.");
                 } catch (e) {
-                    assert.equal(e.message, "Duplicate label '" + duplicateLabels[i] + "'.");
+                    assert.equal(e.message, "Duplicate label '" + this.duplicateLabels[i] + "'.");
                 }
             }
         });
 
         it("should reject reserved label 'total'", function() {
             try {
-                classifier.addLabels("total");
+                this.classifier.addLabels("total");
                 assert.ok(false, "Label should have been rejected.");
             } catch (e) {
                 assert.equal(e.message, "Invalid label. 'total' is a reserved keyword.");
@@ -84,43 +95,42 @@ describe("WhichX", function() {
 
         it("should reject properties of object", function() {
             var i = 0;
-            for (i; i < propertiesOfObjectLabels.length; i++) {
+            for (i; i < this.propertiesOfObjectLabels.length; i++) {
                 try {
-                    classifier.addLabels(propertiesOfObjectLabels[i]);
+                    this.classifier.addLabels(this.propertiesOfObjectLabels[i]);
                     assert.ok(false, "Label should have been rejected.");
                 } catch (e) {
-                    assert.equal(e.message, "Label '" + propertiesOfObjectLabels[i].toLowerCase() + "' must not replace a property of Object.");
+                    assert.equal(e.message, "Label '" + this.propertiesOfObjectLabels[i].toLowerCase() + "' must not replace a property of Object.");
                 }
             }
         });
 
         it("should reject non-string or non-array labels", function() {
             var i = 0;
-            for (i; i < nonStringNonArrayLabels.length; i++) {
+            for (i; i < this.nonStringNonArrayLabels.length; i++) {
                 try {
-                    classifier.addLabels(nonStringNonArrayLabels[i]);
+                    this.classifier.addLabels(this.nonStringNonArrayLabels[i]);
                     assert.ok(false, "Label should have been rejected.");
                 } catch (e) {
-                    assert.equal(e.message, "Invalid label '" + nonStringNonArrayLabels[i] + "' of type '" + typeof nonStringNonArrayLabels[i] + "'. Expected an Array or a string.");
+                    assert.equal(e.message, "Invalid label '" + this.nonStringNonArrayLabels[i] + "' of type '" + typeof this.nonStringNonArrayLabels[i] + "'. Expected an Array or a string.");
                 }
             }
         });
     });
 
     describe("descriptions", function() {
-        var classifier = new Whichx();
-        var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
-
         before(function() {
-            classifier.addLabels(validLabels);
+            var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
+            this.classifier = new Whichx();
+            this.classifier.addLabels(validLabels);
         });
 
         it("should take valid descriptions", function() {
-            classifier.addData("cat", "meow purr sits on lap rasguño");
-            classifier.addData("dog", "bark woof wag sits fetch");
+            this.classifier.addData("cat", "meow purr sits on lap rasguño");
+            this.classifier.addData("dog", "bark woof wag sits fetch");
 
-            assert.equal(classifier.classify("rasguño"), "cat");
-            assert.equal(classifier.classify("bark something"), "dog");
+            assert.equal(this.classifier.classify("rasguño"), "cat");
+            assert.equal(this.classifier.classify("bark something"), "dog");
         });
 
         it("should reject invalid descriptions", function() {
@@ -129,7 +139,7 @@ describe("WhichX", function() {
 
             for (i; i < invalidDescription.length; i++) {
                 try {
-                    classifier.addData("cat", {});
+                    this.classifier.addData("cat", {});
                     assert.fail();
                 } catch (e) {
                     assert.equal(e.message, "Invalid description '[object Object]' of type 'object'. Expected a non-empty string.");
@@ -139,19 +149,20 @@ describe("WhichX", function() {
     });
 
     describe("classification", function() {
-        var classifier = new Whichx();
-        var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
-
         before(function() {
-            classifier.addLabels(validLabels);
-            classifier.addData("cat", "meow purr sits on lap");
-            classifier.addData("dog", "bark woof wag fetch");
+            var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
+            this.classifier = new Whichx();
+            this.classifier.addLabels(validLabels);
+            this.classifier.addData("cat", "meow purr sits on lap");
+            this.classifier.addData("dog", "bark woof wag fetch");
         });
 
-        classificationAssertions(classifier);
+        for (var test of sharedClassificationTests) {
+            it(test.description, test.test);
+        }
 
         it("should successfully classify with only 1 label", function() {
-            classifier = new Whichx();
+            var classifier = new Whichx();
             classifier.addLabels("pokemon");
             classifier.addData("pokemon", "pikachu yellow lightning");
             assert.equal(classifier.classify("pokemanz?"), "pokemon");
@@ -159,20 +170,19 @@ describe("WhichX", function() {
     });
 
     describe("imported export", function() {
-        var classifier = new Whichx();
-        var validLabels = ["cat", "dog"];
-        var dataExport;
-
         before(function() {
+            var validLabels = ["cat", "dog"];
+            var classifier = new Whichx();
             classifier.addLabels(validLabels);
             classifier.addData("cat", "meow purr sits on lap");
             classifier.addData("dog", "bark woof wag fetch");
-            dataExport = classifier.export();
-            classifier = new Whichx();
-            classifier.import(dataExport);
+            this.classifier = new Whichx();
+            this.classifier.import(classifier.export());
         });
 
-        classificationAssertions(classifier);
+        for (var test of sharedClassificationTests) {
+            it(test.description, test.test);
+        }
     });
 
     describe("bayes probability calculation", function() {
@@ -209,16 +219,15 @@ describe("WhichX", function() {
     });
 
     describe("normalization", function() {
-        var classifier;
         before(function() {
-            classifier = new Whichx();
-            classifier.addLabels(["summer"]);
-            classifier.addData("summer", "été");
-            classifier.addData("summer", "ete");
+            this.classifier = new Whichx();
+            this.classifier.addLabels(["summer"]);
+            this.classifier.addData("summer", "été");
+            this.classifier.addData("summer", "ete");
         });
 
         it("should normalize words with diacritic", function() {
-            assert.deepEqual(classifier.export(), {
+            assert.deepEqual(this.classifier.export(), {
                 summer: { ete: 2, tcount: 2, wordTotal: 2 },
                 total: { ete: 2, tcount: 2, wordTotal: 3 }
             });
