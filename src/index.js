@@ -6,41 +6,27 @@
  */
 
 /**
- * @typedef {Object} LabelEntry
- * @property {number} tcount The total number of those labels.
- * @property {number} wordTotal The total number of words added against that label.
+ * @typedef {{ tcount: number, wordTotal: number, [key: string]: number }} LabelEntry
+ * The per-label entry. `tcount` is the total number of those labels, `wordTotal` is the
+ * total number of words added against that label, and any other string key is a word
+ * observed for this label mapped to its occurrence count.
  */
 
 /** @typedef {Record<string, LabelEntry>} TypeMap The map of labels and descriptions. */
 
 /**
- * Defining the Whichx object.
+ * Defining the WhichX object.
  * @param {Config=} config The optional configuration for WhichX.
  */
 function WhichX(config) {
     // Internet explorer 9 or later required, or any other popular browser.
 
+    /** @type {string[]} */
     var STOPWORDS;
-
-    // Stop words including tcount & wordtotal (because they are key words in the maps used to store the data).
-    var DEFAULT_STOPWORDS = ["a", "all", "am", "an", "and", "any", "are", "as", "at", "be", "because",
-        "been", "being", "but", "by", "count", "could", "did", "do", "does", "doing", "during",
-        "each", "few", "for", "had", "has", "have", "having", "he", "hed", "hes",
-        "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how",
-        "hows", "i", "id", "im", "ive", "if", "in", "into", "is", "it", "its", "itself",
-        "lets", "me", "more", "most", "my", "myself", "of", "off", "on", "once",
-        "only", "or", "other", "ought", "our", "ours", "ourselves", "over", "own",
-        "same", "she", "shes", "should", "so", "some", "such", "than", "that",
-        "thats", "the", "their", "theirs", "them", "themselves", "then", "there",
-        "theres", "these", "they", "theyd", "theyll", "theyre", "theyve", "this",
-        "those", "through", "to", "too", "until", "was", "we", "wed", "well", "were",
-        "weve", "what", "whats", "when", "whens", "where", "wheres", "which",
-        "while", "who", "whos", "whom", "why", "whys", "with", "wordtotal", "would", "you", "youd",
-        "youll", "youre", "your", "youve", "yours", "yourself", "yourselves"];
 
     // Configure WhichX object.
     if (!config || !config.stopwords) {
-        STOPWORDS = DEFAULT_STOPWORDS;
+        STOPWORDS = WhichX.getDefaultStopwords();
     } else if (config.stopwords instanceof Array) {
         STOPWORDS = config.stopwords.slice();
         STOPWORDS.push("tcount", "wordtotal");
@@ -120,30 +106,41 @@ function WhichX(config) {
     /**
      * Take a description and find the most likely label for it.
      * @param {string} description The description to classify.
-     * @returns {string} The label that best matches the description.
+     * @returns {string | undefined} The label that best matches the description, or undefined if no labels exist.
      */
     this.classify = function(description) {
-        var wordArray, bestChance, bestLabel, typeName,
-            type, typeChance;
+        var scoreMap = this.scores(description);
+        var bestChance = -1;
+        var bestLabel;
+        var typeName;
+
+        for (typeName in scoreMap) {
+            if (Object.prototype.hasOwnProperty.call(scoreMap, typeName) && scoreMap[typeName] > bestChance) {
+                bestChance = scoreMap[typeName];
+                bestLabel = typeName;
+            }
+        }
+        return bestLabel;
+    };
+
+    /**
+     * Take a description and return the probability of it belonging to each label.
+     * @param {string} description The description to classify.
+     * @returns {Record<string, number>} A map of label names to their probability scores.
+     */
+    this.scores = function(description) {
+        var wordArray, typeName;
+        /** @type {Record<string, number>} */
+        var scores = {};
 
         if (typeof description === "string" && description.length > 0) {
             wordArray = processToArray(description);
-            bestChance = -1;
-            bestLabel = undefined;
-
-            // Loop through types working out the chance of the description being
-            // for this type. If better than bestChance then bestChange <- chance.
             for (typeName in typesMap) {
-                if (Object.prototype.hasOwnProperty.call(typesMap, typeName)) {
-                    type = typesMap[typeName];
-                    typeChance = getTypeChance(type, wordArray);
-                    if (typeChance > bestChance) {
-                        bestChance = typeChance;
-                        bestLabel = typeName;
-                    }
+                if (Object.prototype.hasOwnProperty.call(typesMap, typeName) && typeName !== "total") {
+                    scores[typeName] = getTypeChance(typesMap[typeName], wordArray);
                 }
             }
-            return bestLabel;
+            return scores;
         } else {
             throw new Error("Invalid description " + description + " of type " + typeof description + ". We expected a non empty string.");
         }
@@ -256,6 +253,30 @@ function WhichX(config) {
         }
     }
 }
+
+/**
+ * Returns the default stop words list used by WhichX when no custom
+ * stopwords are provided. Useful for extending the defaults rather than
+ * replacing them entirely.
+ * @returns {string[]} A copy of the default stop words list.
+ */
+WhichX.getDefaultStopwords = function() {
+    // Stop words including tcount & wordtotal (because they are key words in the maps used to store the data).
+    return ["a", "all", "am", "an", "and", "any", "are", "as", "at", "be", "because",
+        "been", "being", "but", "by", "count", "could", "did", "do", "does", "doing", "during",
+        "each", "few", "for", "had", "has", "have", "having", "he", "hed", "hes",
+        "her", "here", "heres", "hers", "herself", "him", "himself", "his", "how",
+        "hows", "i", "id", "im", "ive", "if", "in", "into", "is", "it", "its", "itself",
+        "lets", "me", "more", "most", "my", "myself", "of", "off", "on", "once",
+        "only", "or", "other", "ought", "our", "ours", "ourselves", "over", "own",
+        "same", "she", "shes", "should", "so", "some", "such", "than", "that",
+        "thats", "the", "their", "theirs", "them", "themselves", "then", "there",
+        "theres", "these", "they", "theyd", "theyll", "theyre", "theyve", "this",
+        "those", "through", "to", "too", "until", "was", "we", "wed", "well", "were",
+        "weve", "what", "whats", "when", "whens", "where", "wheres", "which",
+        "while", "who", "whos", "whom", "why", "whys", "with", "wordtotal", "would", "you", "youd",
+        "youll", "youre", "your", "youve", "yours", "yourself", "yourselves"];
+};
 
 // Export whichx function if using node.
 if (module && module.exports) {

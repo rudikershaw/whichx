@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "18"
+  - "24"
 dist: focal
 script:
   - npm run build

@@ -1,5 +1,5 @@
 var assert = require("assert");
-var Whichx = require("../src");
+var WhichX = require("../src");
 
 var sharedClassificationTests = [
     {
@@ -30,7 +30,7 @@ var sharedClassificationTests = [
 describe("WhichX", function() {
     describe("constructor", function() {
         before(function() {
-            this.classifier = new Whichx();
+            this.classifier = new WhichX();
         });
 
         it("should create an object", function() {
@@ -38,7 +38,7 @@ describe("WhichX", function() {
         });
 
         it("should create a unique object", function() {
-            var newClassifier = new Whichx();
+            var newClassifier = new WhichX();
             newClassifier.property = 1;
             assert.equal(this.classifier.property, undefined);
         });
@@ -58,7 +58,7 @@ describe("WhichX", function() {
 
     describe("labels", function() {
         before(function() {
-            this.classifier = new Whichx();
+            this.classifier = new WhichX();
             this.validLabels = ["cat", "dog", "hippopotamus", ["horse", "lizard"], "pájaro"];
             this.duplicateLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
             this.nonStringNonArrayLabels = [{}, /test/, 1, true, () => {}];
@@ -121,7 +121,7 @@ describe("WhichX", function() {
     describe("descriptions", function() {
         before(function() {
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
-            this.classifier = new Whichx();
+            this.classifier = new WhichX();
             this.classifier.addLabels(validLabels);
         });
 
@@ -151,7 +151,7 @@ describe("WhichX", function() {
     describe("classification", function() {
         before(function() {
             var validLabels = ["cat", "dog", "hippopotamus", "horse", "lizard", "pájaro"];
-            this.classifier = new Whichx();
+            this.classifier = new WhichX();
             this.classifier.addLabels(validLabels);
             this.classifier.addData("cat", "meow purr sits on lap");
             this.classifier.addData("dog", "bark woof wag fetch");
@@ -162,7 +162,7 @@ describe("WhichX", function() {
         }
 
         it("should successfully classify with only 1 label", function() {
-            var classifier = new Whichx();
+            var classifier = new WhichX();
             classifier.addLabels("pokemon");
             classifier.addData("pokemon", "pikachu yellow lightning");
             assert.equal(classifier.classify("pokemanz?"), "pokemon");
@@ -172,11 +172,11 @@ describe("WhichX", function() {
     describe("imported export", function() {
         before(function() {
             var validLabels = ["cat", "dog"];
-            var classifier = new Whichx();
+            var classifier = new WhichX();
             classifier.addLabels(validLabels);
             classifier.addData("cat", "meow purr sits on lap");
             classifier.addData("dog", "bark woof wag fetch");
-            this.classifier = new Whichx();
+            this.classifier = new WhichX();
             this.classifier.import(classifier.export());
         });
 
@@ -187,7 +187,7 @@ describe("WhichX", function() {
 
     describe("bayes probability calculation", function() {
         it("should not let common words from a dominant label override distinctive signal from a minority label", function() {
-            var classifier = new Whichx();
+            var classifier = new WhichX();
             classifier.addLabels(["sci", "fic"]);
             var i = 0;
             for (i; i < 20; i++) {
@@ -200,7 +200,7 @@ describe("WhichX", function() {
 
     describe("stop words", function() {
         it("defaults should be ignored if no others specified", function() {
-            var classifier = new Whichx();
+            var classifier = new WhichX();
             classifier.addLabels(["cat", "dog"]);
             classifier.addData("cat", "the the most more meow purr sits on lap");
             classifier.addData("dog", "bark woof wag fetch");
@@ -209,18 +209,73 @@ describe("WhichX", function() {
         });
 
         it("configured stop words should be ignored if specified", function() {
-            var classifier = new Whichx({ stopwords: ["bark", "woof", "wag"] });
+            var classifier = new WhichX({ stopwords: ["bark", "woof", "wag"] });
             classifier.addLabels(["cat", "dog"]);
             classifier.addData("cat", "meow purr sits on lap");
             classifier.addData("dog", "bark woof wag fetch sniff");
             assert.equal(classifier.classify("bark woof wag purr"), "cat");
             assert.equal(classifier.classify("fetch"), "dog");
         });
+
+        it("should support extending defaults via WhichX.getDefaultStopwords", function() {
+            var extended = new WhichX({ stopwords: WhichX.getDefaultStopwords().concat(["meow", "bark"]) });
+            extended.addLabels(["cat", "dog"]);
+            extended.addData("cat", "meow purr sits on lap");
+            extended.addData("dog", "bark woof wag fetch");
+            // Default stop words are still filtered.
+            assert.equal(extended.classify("the the the purr"), "cat");
+            // And so are the extra ones we added.
+            assert.equal(extended.classify("meow bark fetch"), "dog");
+        });
+
+        it("WhichX.getDefaultStopwords should return a fresh copy each call", function() {
+            var first = WhichX.getDefaultStopwords();
+            first.push("mutated");
+            var second = WhichX.getDefaultStopwords();
+            assert.equal(second.indexOf("mutated"), -1);
+        });
+    });
+
+    describe("scores", function() {
+        before(function() {
+            this.classifier = new WhichX();
+            this.classifier.addLabels(["cat", "dog"]);
+            this.classifier.addData("cat", "meow purr sits on lap");
+            this.classifier.addData("dog", "bark woof wag fetch");
+        });
+
+        it("should return a probability for each label", function() {
+            var scores = this.classifier.scores("meow");
+            assert.equal(typeof scores, "object");
+            assert.equal(typeof scores.cat, "number");
+            assert.equal(typeof scores.dog, "number");
+        });
+
+        it("should not include the internal total entry", function() {
+            var scores = this.classifier.scores("meow");
+            assert.ok(!("total" in scores));
+        });
+
+        it("should agree with classify on the best label", function() {
+            assert.equal(this.classifier.classify("meow purr"), "cat");
+            var scores = this.classifier.scores("meow purr");
+            assert.ok(scores.cat > scores.dog);
+
+            assert.equal(this.classifier.classify("bark fetch"), "dog");
+            scores = this.classifier.scores("bark fetch");
+            assert.ok(scores.dog > scores.cat);
+        });
+
+        it("should throw on invalid description", function() {
+            var self = this;
+            assert.throws(function() { self.classifier.scores(""); });
+            assert.throws(function() { self.classifier.scores(123); });
+        });
     });
 
     describe("normalization", function() {
         before(function() {
-            this.classifier = new Whichx();
+            this.classifier = new WhichX();
             this.classifier.addLabels(["summer"]);
             this.classifier.addData("summer", "été");
             this.classifier.addData("summer", "ete");

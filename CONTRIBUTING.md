@@ -1,4 +1,15 @@
 
+# WhichX
+
+## Principles 
+
+Before you contribute, you should know that this project has a few principles we would like to maintain going forward;
+
+* **No dependencies.** The classifier should be fully self contained.
+* **Broadest possible support.** The deliverable should work even on 20+ year old technology.
+* **Simplicity.** This is not a research project. It is an easy to use tool for anyone with basic understanding of classification.
+* **Small.** This library should stay tiny.
+
 ## Contributing
 
 To get started making changes to the project you will need to;
