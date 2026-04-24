@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint src/*.js && eslint test/*.js && echo 'Linting complete.'",
+    "lint": "eslint && echo 'Linting complete.'",
     "test": "npm run lint && mocha test/ && echo 'Testing complete.'",
     "typescript": "tsc && echo 'Type definitions built.'",
     "minify": "uglifyjs src/index.js -o dist/index.js --source-map && echo 'Sources minified.'",

@@ -2,11 +2,11 @@ const neostandard = require("neostandard");
 const mocha = require("eslint-plugin-mocha").default;
 
 module.exports = [
+    { ignores: ["dist/**"] },
     ...neostandard({ semi: true }),
     mocha.configs.recommended,
     {
         languageOptions: {
-            ecmaVersion: 2015,
             sourceType: "commonjs",
             globals: {
                 browser: "readonly"
@@ -20,5 +20,13 @@ module.exports = [
             "no-var": "off",
             "mocha/consistent-spacing-between-blocks": "off"
         }
+    },
+    {
+        files: ["src/**/*.js"],
+        languageOptions: { ecmaVersion: 5 }
+    },
+    {
+        files: ["test/**/*.js"],
+        languageOptions: { ecmaVersion: "latest" }
     }
 ];
