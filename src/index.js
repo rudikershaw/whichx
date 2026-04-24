@@ -19,8 +19,6 @@
  * @param {Config=} config The optional configuration for WhichX.
  */
 function WhichX(config) {
-    // Internet explorer 9 or later required, or any other popular browser.
-
     /** @type {string[]} */
     var STOPWORDS;
 
@@ -188,41 +186,29 @@ function WhichX(config) {
     }
 
     /**
-     * Loop through words and work out probability of a type given each word.
-     * Multiply each word's probability by total probability to determine type probability.
+     * Score how a list of words matches a given label. Each word contributes
+     * a probability based on how often it appears under that label, with a small
+     * constant added so unseen words still count. Those probabilities are
+     * multiplied together and weighted by how common the label is overall.
      * @param {LabelEntry} type The label entry to test.
      * @param {string[]} words The words list in the description.
-     * @returns {number} The probability that the description belongs to that given label.
+     * @returns {number} A score proportional to P(class | words).
      */
     function getTypeChance(type, words) {
-        var i, typeWordCount, totalWordCount, p1, p2, wordChance;
-        var typeChance = 0;
+        var i, wordCount, pWordGivenType;
+        var pType = 1;
         var total = typesMap.total;
+        // The total map also stores the two reserved keys tcount and wordTotal, so subtract them.
+        var vocabularySize = Object.keys(total).length - 2;
+        var denominator = type.wordTotal + vocabularySize;
 
         for (i = 0; i < words.length; i++) {
-            typeWordCount = (typeof type[words[i]] !== "undefined" ? type[words[i]] : mEstimate());
-            totalWordCount = (typeof total[words[i]] !== "undefined" ? total[words[i]] : mEstimate());
-            // Bayes' theorem calculation.
-            p1 = (typeWordCount / type.wordTotal) * (type.tcount / total.tcount);
-            p2 = ((totalWordCount - typeWordCount) / (total.wordTotal - type.wordTotal)) * ((total.tcount - type.tcount) / total.tcount);
-            wordChance = p1 / (p1 + p2);
-            if (typeChance <= 0) {
-                typeChance = wordChance;
-            } else {
-                typeChance = typeChance * wordChance;
-            }
+            wordCount = (typeof type[words[i]] !== "undefined" ? type[words[i]] : 0);
+            pWordGivenType = (wordCount + 1) / denominator;
+            pType = pType * pWordGivenType;
         }
-        // Multiply final probability by overall probability that it is of this type to weight by most popular types.
-        return typeChance * (type.tcount / total.tcount);
-    }
-
-    /**
-     * A non-zero prior estimate to prevent 0 based probability calculations.
-     * @returns {number} The non-zero probability.
-     */
-    function mEstimate() {
-        var total = typesMap.total;
-        return 1 / (total.wordTotal * 100);
+        // Multiply by the class prior P(class) = tcount_c / tcount_total.
+        return pType * (type.tcount / total.tcount);
     }
 
     /**
